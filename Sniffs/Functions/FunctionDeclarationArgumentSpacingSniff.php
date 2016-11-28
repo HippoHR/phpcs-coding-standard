@@ -1,95 +1,95 @@
-<?php                   
-/**                 
+<?php
+/**
  * Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff.
  *
  * PHP version 5
- *              
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                 
-                        
-/**                     
+ */
+
+/**
  * Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff.
- *                  
+ *
  * Checks that arguments in function declarations are spaced correctly.
- *                  
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */             
+ */
 class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements PHP_CodeSniffer_Sniff
-{                   
-                
+{
+
     /**
      * How many spaces should surround the equals signs.
-     *              
-     * @var int     
-     */             
+     *
+     * @var int
+     */
     public $equalsSpacing = 0;
-                    
-                
+
+
     /**
      * Returns an array of tokens this test wants to listen for.
-     *              
+     *
      * @return array
-     */             
+     */
     public function register()
-    {               
-        return array(   
+    {
+        return array(
                 T_FUNCTION,
-                T_CLOSURE, 
-               );       
-                    
+                T_CLOSURE,
+               );
+
     }//end register()
-                    
-                
+
+
     /**
      * Processes this test, when one of its tokens is encountered.
-     *              
+     *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
      * @param int                  $stackPtr  The position of the current token in the
      *                                        stack passed in $tokens.
-     *                       
-     * @return void 
-     */         
+     *
+     * @return void
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         #######################################################
         # Variant of Squiz/Sniffs/Functions/FunctionDeclarationArgumentSpacingSniff.php
-        #       
+        #
         # Changes:
         # - Fixed spacing around parenthesis
         #######################################################
 
         $this->equalsSpacing = (int) $this->equalsSpacing;
-            
+
         $tokens       = $phpcsFile->getTokens();
         $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
         $this->processBracket($phpcsFile, $openBracket);
-            
+
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($tokens[$openBracket]['parenthesis_closer'] + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
                 $openBracket  = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1), null);
                 $this->processBracket($phpcsFile, $openBracket);
-            }       
-        }       
-                    
+            }
+        }
+
     }//end process()
-                
-            
-    /** 
+
+
+    /**
      * Processes the contents of a single set of brackets.
-     *  
+     *
      * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
      * @param int                  $openBracket The position of the open bracket
      *                                          in the stack passed in $tokens.
      *
      * @return void
-     */ 
+     */
     public function processBracket(PHP_CodeSniffer_File $phpcsFile, $openBracket)
-    {       
+    {
         $tokens       = $phpcsFile->getTokens();
         $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
         $multiLine    = ($tokens[$openBracket]['line'] !== $tokens[$closeBracket]['line']);
@@ -323,6 +323,3 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
 
 
 }//end class
-
-?>
-

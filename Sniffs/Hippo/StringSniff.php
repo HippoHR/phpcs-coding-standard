@@ -1,30 +1,30 @@
 <?php
 /**
  * Hippo_Sniffs_Hippo_StringSniff.
- *  
+ *
  * PHP version 5
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */     
-    
+ */
+
 /**
  * Hippo_Sniffs_Hippo_StringSniff.
  *
  * Applies restrictions to double quoted strings.
- *  
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */         
+ */
 class Hippo_Sniffs_Hippo_StringSniff implements PHP_CodeSniffer_Sniff
-{           
-    /**     
+{
+    /**
      * Returns an array of tokens this test wants to listen for.
-     *      
+     *
      * @return array
-     */     
+     */
     public function register()
     {
         return array(
@@ -41,14 +41,14 @@ class Hippo_Sniffs_Hippo_StringSniff implements PHP_CodeSniffer_Sniff
      * @param PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
-     *  
+     *
      * @return void
-     */ 
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {   
+    {
         // Get tokens.
         $tokens = $phpcsFile->getTokens();
-        
+
 
         // CHECK 1: T_DOUBLE_QUOTED_STRING's are not allowed.
         if( $tokens[ $stackPtr ][ 'code' ] == T_DOUBLE_QUOTED_STRING )
@@ -62,7 +62,7 @@ class Hippo_Sniffs_Hippo_StringSniff implements PHP_CodeSniffer_Sniff
             // http://www.php.net/manual/en/language.types.string.php#language.types.string.syntax.double
             // Check the content of the double quoted string.
             $string = $tokens[ $stackPtr ][ 'content' ];
-                   
+
             // Exclude single quoted strings. Unfortunately, when having al multiline string like this:
             // "SELECT *
             //  FROM jobs
@@ -82,14 +82,14 @@ class Hippo_Sniffs_Hippo_StringSniff implements PHP_CodeSniffer_Sniff
                {
                    break;
                }
-            } 
-            
+            }
+
             // Exclude single quoted strings.
             if( substr( $tokens[$firstString]['content'], 0, 1 ) == '\'' )
             {
                 return;
             }
-            
+
              // Remove leading "
             $string = ltrim( $string, '"' );
 
@@ -114,6 +114,3 @@ class Hippo_Sniffs_Hippo_StringSniff implements PHP_CodeSniffer_Sniff
 
 
 }//end class
-
-?>
-

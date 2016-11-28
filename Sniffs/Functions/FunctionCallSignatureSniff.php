@@ -316,5 +316,3 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
 
 
 }//end class
-?>
-

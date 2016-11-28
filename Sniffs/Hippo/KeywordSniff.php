@@ -9,7 +9,7 @@
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
  */
 
-/** 
+/**
  * Hippo_Sniffs_Hippo_KeywordSniff.
  *
  * Checks wether keywords are used correctly.
@@ -17,7 +17,7 @@
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */         
+ */
 class Hippo_Sniffs_Hippo_KeywordSniff implements PHP_CodeSniffer_Sniff
 {
 
@@ -125,6 +125,3 @@ class Hippo_Sniffs_Hippo_KeywordSniff implements PHP_CodeSniffer_Sniff
 
 
 }//end class
-
-?>
-

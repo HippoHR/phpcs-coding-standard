@@ -98,12 +98,9 @@ class Hippo_Sniffs_Hippo_ArrayUsageSniff implements PHP_CodeSniffer_Sniff
 
 
         //$error = 'It\'s not allowed to use variables inside double quoted strings. Found: ' . $tokens[ $stackPtr ][ 'content' ];
-        //$phpcsFile->addError( $error, $stackPtr, 'VariableInsideDoubleQuotedString' ); 
+        //$phpcsFile->addError( $error, $stackPtr, 'VariableInsideDoubleQuotedString' );
 
     }//end process()
 
 
 }//end class
-
-?>
-

@@ -1,76 +1,76 @@
-<?php           
-/**             
+<?php
+/**
  * Hippo_Sniffs_Hippo_NamespaceSniff.
- *                              
- * PHP version 5                
- *                              
- * @category  PHP               
- * @package   PHP_CodeSniffer   
+ *
+ * PHP version 5
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                             
-                                
-/**                             
+ */
+
+/**
  * Hippo_Sniffs_Hippo_NamespaceSniff.
- *                              
+ *
  * Checks wether namespaces are used correctly.
- *                              
- * @category  PHP               
- * @package   PHP_CodeSniffer   
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                             
+ */
 class Hippo_Sniffs_Hippo_NamespaceSniff implements PHP_CodeSniffer_Sniff
-{                               
-                                
-    /**                         
+{
+
+    /**
      * Returns an array of tokens this test wants to listen for.
-     *                          
-     * @return array            
-     */                         
-    public function register()  
-    {                           
+     *
+     * @return array
+     */
+    public function register()
+    {
         return array(T_NAMESPACE, T_USE);
-                                
-    }//end register()           
-                                
-                                
-    /**                         
+
+    }//end register()
+
+
+    /**
      * Processes this test, when one of its tokens is encountered.
-     *                          
+     *
      * @param PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
-     *                          
-     * @return void             
-     */                         
+     *
+     * @return void
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {                           
-        // TODO:                
+    {
+        // TODO:
         // - No constants may be defined in a namespace (except class constants)
         // - No functions may be defined in a namespace (except class methods)
-                                
-        // Get tokens.          
+
+        // Get tokens.
         $tokens = $phpcsFile->getTokens();
-                                
+
         // CHECK 1: Make sure there is max 1 T_NAMESPACE in this file.
         if( $tokens[$stackPtr]['code'] == T_NAMESPACE )
-        {                       
+        {
             foreach( $tokens as $ptr => $token )
-            {                   
+            {
                 if( $ptr != $stackPtr && $token['code'] == T_NAMESPACE )
-                {               
+                {
                     $error = 'Only one namespace per file is allowed.';
                     $phpcsFile->addError( $error, $stackPtr, 'MaxNamespacesPerFile' );
-                    break;      
-                }               
-            }                   
-        }                       
-                                
-                        
+                    break;
+                }
+            }
+        }
+
+
         // CHECK 2: Make sure no namespace blocks are used ("namespace AnotherProject { ... }")
         if( $tokens[$stackPtr]['code'] == T_NAMESPACE )
         {
             $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
-        
+
             // Find first interesting token.
             while( $tokens[ $next ][ 'code' ] == T_STRING || $tokens[ $next ][ 'code' ] == T_NS_SEPARATOR )
             {
@@ -83,12 +83,12 @@ class Hippo_Sniffs_Hippo_NamespaceSniff implements PHP_CodeSniffer_Sniff
                 $error = 'No namespace blocks are allowed.';
                 $phpcsFile->addError( $error, $stackPtr, 'NoNamespaceBlocksAllowed' );
             }
-        }       
-                
-                
+        }
+
+
         // CHECK 3: (Sub)namespace names must be in StudlyCaps.
         if( $tokens[$stackPtr]['code'] == T_NAMESPACE )
-        {       
+        {
             $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr + 1, null, true);
 
             // Loop until we don't find a T_STRING or T_NS_SEPARATOR anymore.
@@ -126,6 +126,3 @@ class Hippo_Sniffs_Hippo_NamespaceSniff implements PHP_CodeSniffer_Sniff
 
 
 }//end class
-
-?>
-

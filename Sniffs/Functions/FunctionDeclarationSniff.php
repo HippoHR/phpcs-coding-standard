@@ -1,70 +1,70 @@
-<?php               
-/**                 
+<?php
+/**
  * Hippo_Sniffs_Functions_FunctionDeclarationSniff.
- *                  
- * PHP version 5        
- *                  
+ *
+ * PHP version 5
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                     
-                        
+ */
+
 /**
  * Hippo_Sniffs_Functions_FunctionDeclarationSniff.
- *                          
+ *
  * Ensure single and multi-line function declarations are defined correctly.
- *                                    
- * @category  PHP                     
- * @package   PHP_CodeSniffer        
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                     
+ */
 class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer_Sniff
-{                       
-                            
-                        
-    /**                     
+{
+
+
+    /**
      * Returns an array of tokens this test wants to listen for.
-     *                                
-     * @return array                 
-     */                     
-    public function register() 
-    {                       
-        return array(       
+     *
+     * @return array
+     */
+    public function register()
+    {
+        return array(
                 T_FUNCTION,
                 T_CLOSURE,
-               );         
-                                    
-    }//end register()               
-                                   
-                          
-    /**                 
+               );
+
+    }//end register()
+
+
+    /**
      * Processes this test, when one of its tokens is encountered.
-     *                  
+     *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
-     *                                
-     * @return void                   
-     */                              
+     *
+     * @return void
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {               
+    {
         #############################################################
         # Variant of PEAR/Sniffs/Functions/FunctionDeclarationSniff.php
-        #           
-        # Changes:                
+        #
+        # Changes:
         #  - tabs are 2 spaces instead of 4
         #  - opening brace should be on seperate line
         #############################################################
-            
+
         $tokens = $phpcsFile->getTokens();
-            
+
         // Opening brace should be on seperate line
         $errorData = array($tokens[$stackPtr]['content']);
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             $error = 'Possible parse error: %s missing opening or closing brace';
             $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
             return;
-        }       
+        }
         $curlyBrace  = $tokens[$stackPtr]['scope_opener'];
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBrace - 1), $stackPtr, true);
         $classLine   = $tokens[$lastContent]['line'];
@@ -72,7 +72,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
         if ($braceLine === $classLine) {
             $error = 'Opening brace of a %s must be on the line after the definition';
             $phpcsFile->addError($error, $curlyBrace, 'OpenBraceNewLine', $errorData);
-            return;    
+            return;
         } else if ($braceLine > ($classLine + 1)) {
             $error = 'Opening brace of a %s must be on the line following the %s declaration; found %s line(s)';
             $data  = array(
@@ -82,12 +82,12 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
                      );
             $phpcsFile->addError($error, $curlyBrace, 'OpenBraceWrongLine', $data);
             return;
-        }   
-            
-        $spaces = 0;      
+        }
+
+        $spaces = 0;
         if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
             $spaces = strlen($tokens[($stackPtr + 1)]['content']);
-        }   
+        }
 
         if ($spaces !== 1) {
             $error = 'Expected 1 space after FUNCTION keyword; %s found';
@@ -353,5 +353,3 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
 
 
 }//end class
-
-?>

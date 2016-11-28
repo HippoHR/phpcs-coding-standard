@@ -1,35 +1,35 @@
-<?php                   
-/**                 
+<?php
+/**
  * Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff.
- *          
+ *
  * PHP version 5
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */     
-            
+ */
+
 if (class_exists('Hippo_Sniffs_Functions_FunctionDeclarationSniff', true) === false) {
     $error = 'Class Hippo_Sniffs_Functions_FunctionDeclarationSniff not found';
     throw new PHP_CodeSniffer_Exception($error);
-}               
-                    
-/**                 
+}
+
+/**
  * Squiz_Sniffs_Functions_MultiLineFunctionDeclarationSniff.
- *              
+ *
  * Ensure single and multi-line function declarations are defined correctly.
- *              
+ *
  * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */                 
+ */
 class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sniffs_Functions_FunctionDeclarationSniff
-{                   
-                
+{
 
-    /**         
+
+    /**
      * Processes mutli-line declarations.
-     *              
+     *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
@@ -37,15 +37,15 @@ class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sni
      *                                        the file.
      *
      * @return void
-     */     
+     */
     public function processMultiLineDeclaration(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens)
-    {       
+    {
         // We do everything the parent sniff does, and a bit more.
         parent::processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens);
-                
+
         $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
         $this->processBracket($phpcsFile, $openBracket, $tokens, 'function');
-        
+
         if ($tokens[$stackPtr]['code'] !== T_CLOSURE) {
             return;
         }
@@ -129,5 +129,3 @@ class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sni
 
 
 }//end class
-
-?>

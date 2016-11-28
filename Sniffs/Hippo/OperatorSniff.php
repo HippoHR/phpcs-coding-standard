@@ -1,30 +1,30 @@
-<?php                           
-/** 
+<?php
+/**
  * Hippo_Sniffs_Hippo_OperatorSniff.
- *                              
- * PHP version 5                
  *
- * @category  PHP               
+ * PHP version 5
+ *
+ * @category  PHP
  * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
  */
 
 /**
  * Hippo_Sniffs_Hippo_OperatorSniff.
- *  
- * @category  PHP               
- * @package   PHP_CodeSniffer   
+ *
+ * @category  PHP
+ * @package   PHP_CodeSniffer
  * @author    Dennis Broeks <dennis@uitzendbureau.nl>
- */     
+ */
 class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
-{       
-    /** 
+{
+    /**
      * Returns an array of tokens this test wants to listen for.
-     *  
+     *
      * @return array
-     */ 
+     */
     public function register()
-    {       
+    {
         return array_unique( array_merge(
             PHP_CodeSniffer_Tokens::$operators,
             PHP_CodeSniffer_Tokens::$booleanOperators,
@@ -32,30 +32,30 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
             PHP_CodeSniffer_Tokens::$assignmentTokens,
             PHP_CodeSniffer_Tokens::$arithmeticTokens,
             PHP_CodeSniffer_Tokens::$equalityTokens,
-            array(              
-                T_STRING_CONCAT 
-            )           
+            array(
+                T_STRING_CONCAT
+            )
         ) );
     }//end register()
-        
-            
-    /** 
+
+
+    /**
      * Processes this test, when one of its tokens is encountered.
-     *      
+     *
      * @param PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
      * @param int                  $stackPtr  The position of the current token
      *                                        in the stack passed in $tokens.
      *
      * @return void
-     */     
+     */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {           
+    {
         // Get tokens.
         $tokens = $phpcsFile->getTokens();
-        
+
         $prev = $phpcsFile->findPrevious(null, $stackPtr-1, null, true);
         $next = $phpcsFile->findNext(null, $stackPtr+1, null, true);
-        
+
         $allowNoSpacesNext = false;
         $allowMultipleSpacesPrev = false;
         $allowMultipleSpacesNext = false;
@@ -69,10 +69,10 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
         // $Y->z -$x     -> Not allowed
         // TODO: Improve this. For how, we simply allow any case where there is either 1 or 0 space on the right side of a T_MINUS.
         if( $tokens[ $stackPtr ]['code'] === T_MINUS || $tokens[ $stackPtr ]['code'] === T_BITWISE_AND )
-        {          
+        {
             $allowNoSpacesNext = true;
-        }              
-                   
+        }
+
         $prevCont = $tokens[$prev]['content'];
         $nextCont = $tokens[$next]['content'];
         $prevLen = strlen( $prevCont );
@@ -86,7 +86,7 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
             $allowMultipleSpacesPrev = true;
         }
         if( strpos( $nextCont, "\n" ) !== false )
-        {   
+        {
             $allowMultipleSpacesNext = true;
         }
 
@@ -105,6 +105,3 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
 
 
 }//end class
-
-?>
-

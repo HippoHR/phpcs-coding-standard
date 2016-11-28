@@ -166,7 +166,7 @@ class Hippo_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Sniff
             // another call to this sniff.
             if (in_array($tokens[$i]['code'], PHP_CodeSniffer_Tokens::$scopeOpeners) === true) {
 
-//echo "\n" . 'CONT1 '; 
+//echo "\n" . 'CONT1 ';
 //var_dump($tokens[$i]);
 
                 if (isset($tokens[$i]['scope_opener']) === true) {
@@ -401,5 +401,3 @@ class Hippo_Sniffs_WhiteSpace_ScopeIndentSniff implements PHP_CodeSniffer_Sniff
 
 
 }//end class
-
-?>
