@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<ruleset name="Hippo">
+ <description>The Hippo coding standard.</description>
+
+ <!-- 1. PSR1 variant -->
+
+ <!-- PHP code MUST use the long <?php ?> tags or the short-echo <?= ?> tags; it MUST NOT use the other tag variations. -->
+ <rule ref="Generic.PHP.DisallowShortOpenTag.EchoFound">
+  <severity>0</severity>
+ </rule>
+
+ <!-- PHP code MUST use only UTF-8 without BOM. -->
+ <rule ref="Generic.Files.ByteOrderMark"/>
+
+ <!-- Namespaces and classes MUST follow PSR-0.
+      This means each class is in a file by itself, and is in a namespace of at least one level: a top-level vendor name. -->
+ <rule ref="PSR1.Classes.ClassDeclaration"/>
+
+ <!-- Class names MUST be declared in StudlyCaps. -->
+ <rule ref="Squiz.Classes.ValidClassName"/>
+
+ <!-- Class constants MUST be declared in all upper case with underscore separators. -->
+ <rule ref="Generic.NamingConventions.UpperCaseConstantName"/>
+
+ <!-- Method names MUST be declared in camelCase(). -->
+ <rule ref="Generic.NamingConventions.CamelCapsFunctionName">
+  <properties>
+   <property name="strict" value="false"/>
+  </properties>
+ </rule>
+
+
+ <!-- 2. PSR2 variant -->
+
+ <!-- All PHP files MUST use the Unix LF (linefeed) line ending. -->
+ <rule ref="Generic.Files.LineEndings">
+  <properties>
+   <property name="eolChar" value="\n"/>
+  </properties>
+ </rule>
+
+ <!-- The closing ?> tag MUST be omitted from files containing only PHP. -->
+ <!-- http://stackoverflow.com/questions/3219383/why-do-some-scripts-omit-the-closing-php-tag -->
+ <rule ref="Zend.Files.ClosingTag"/>
+
+ <!-- The soft limit on line length MUST be 160 characters; automated style checkers MUST warn but MUST NOT error at the soft limit. -->
+ <rule ref="Generic.Files.LineLength">
+  <properties>
+   <property name="lineLimit" value="160"/>
+   <property name="absoluteLineLimit" value="0"/>
+  </properties>
+ </rule>
+
+ <!-- There MUST NOT be more than one statement per line. -->
+ <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
+
+ <!-- Code MUST use an indent of 2 spaces, and MUST NOT use tabs for indenting. -->
+ <rule ref="Hippo.WhiteSpace.ScopeIndent">
+  <properties>
+   <property name="indent" value="2"/>
+   <property name="exact" value="true"/>
+  </properties>
+ </rule>
+ <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+
+ <!-- The PHP constants true, false, and null MUST be in lower case. -->
+ <rule ref="Generic.PHP.LowerCaseConstant"/>
+
+ <!-- When present, there MUST be one blank line after the namespace declaration. -->
+ <rule ref="PSR2.Namespaces.NamespaceDeclaration"/>
+
+ <!-- When present, all use declarations MUST go after the namespace declaration.
+      There MUST be one use keyword per declaration.
+      There MUST be one blank line after the use block. -->
+ <rule ref="PSR2.Namespaces.UseDeclaration"/>
+
+ <!-- The extends and implements keywords MUST be declared on the same line as the class name.
+      The opening brace for the class go MUST go on its own line; the closing brace for the class MUST go on the next line after the body.
+      Lists of implements MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one interface per line. -->
+ <rule ref="PSR2.Classes.ClassDeclaration"/>
+
+ <!-- Visibility MUST be declared on all properties.
+      The var keyword MUST NOT be used to declare a property.
+      There MUST NOT be more than one property declared per statement.
+      Property names SHOULD NOT be prefixed with a single underscore to indicate protected or private visibility. -->
+ <rule ref="PSR2.Classes.PropertyDeclaration"/>
+
+ <!-- Visibility MUST be declared on all methods. -->
+ <rule ref="Squiz.Scope.MethodScope"/>
+ <rule ref="Squiz.WhiteSpace.ScopeKeywordSpacing"/>
+
+ <!-- Method names SHOULD NOT be prefixed with a single underscore to indicate protected or private visibility. -->
+ <rule ref="PSR2.Methods.MethodDeclaration"/>
+
+ <!-- Method names MUST NOT be declared with a space after the method name. The opening brace MUST go on its own line, and the closing brace MUST go on the next line following the body. There MUST be a space after the opening parenthesis, and there MUST be a space before the closing parenthesis. -->
+ <rule ref="Generic.Functions.OpeningFunctionBraceBsdAllman"/>
+
+ <!-- In the argument list, there MUST NOT be a space before each comma, and there MUST be one space after each comma. -->
+ <rule ref="Hippo.Functions.FunctionDeclarationArgumentSpacing">
+  <properties>
+   <property name="equalsSpacing" value="1"/>
+  </properties>
+ </rule>
+
+ 
+ <!-- Method arguments with default values MUST go at the end of the argument list. -->
+ <rule ref="PEAR.Functions.ValidDefaultValue"/>
+
+ <!-- Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line. When the argument list is split across multiple lines, the closing parenthesis and opening brace MUST be placed together on their own line with one space between them. -->
+ <!-- Using Hippo.Functions.MultiLineFunctionDeclaration here -->
+
+ <!-- When present, the abstract and final declarations MUST precede the visibility declaration.
+      When present, the static declaration MUST come after the visibility declaration. -->
+ <rule ref="PSR2.Methods.MethodDeclaration"/>
+
+ <!-- Function keywords like public, static and function should be lower case -->
+ <rule ref="Squiz.Functions.LowercaseFunctionKeywords"/>
+
+ <!-- When making a method or function call, there MUST NOT be a space between the method or function name and the opening parenthesis, there MUST be a space after the opening parenthesis, and there MUST be a space before the closing parenthesis. In the argument list, there MUST NOT be a space before each comma, and there MUST be one space after each comma.
+ Argument lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument per line. -->
+ <rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
+ <rule ref="Hippo.Functions.FunctionCallSignature">
+  <properties>
+   <property name="allowMultipleArguments" value="false"/>
+  </properties>
+ </rule>
+
+ <!-- The keyword elseif SHOULD be used instead of else if so that all control keywords look like single words. -->
+ <rule ref="PSR2.ControlStructures.ElseIfDeclaration"/>
+
+ <!-- The case statement MUST be indented once from switch, and the break keyword (or other terminating keyword) MUST be indented at the same level as the case body. There MUST be a comment such as // no break when fall-through is intentional in a non-empty case body. -->
+ <!--<rule ref="PSR2.ControlStructures.SwitchDeclaration"/>-->
+
+ <!-- Closures MUST be declared with a space after the function keyword, and a space before and after the use keyword.
+ The opening brace MUST go on the same line, and the closing brace MUST go on the next line following the body.
+ There MUST be a space after the opening parenthesis of the argument list or variable list, and there MUST be a space before the closing parenthesis of the argument list or variable list.
+ In the argument list and variable list, there MUST NOT be a space before each comma, and there MUST be one space after each comma.
+ Closure arguments with default values MUST go at the end of the argument list.
+ Argument lists and variable lists MAY be split across multiple lines, where each subsequent line is indented once. When doing so, the first item in the list MUST be on the next line, and there MUST be only one argument or variable per line.
+ When the ending list (whether or arguments or variables) is split across multiple lines, the closing parenthesis and opening brace MUST be placed together on their own line with one space between them. -->
+ <!-- Using Hippo.Functions.MultiLineFunctionDeclaration here -->
+
+
+
+
+
+ <!-- TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO -->
+ <!-- Check SQAP voor zaken die nog niet gecontroleerd worden -->
+
+ <!-- Check (S)CSS -->
+ <rule ref="Squiz.CSS.ClassDefinitionClosingBraceSpace"/>
+ <rule ref="Squiz.CSS.ColonSpacing"/>
+ <rule ref="Squiz.CSS.DisallowMultipleStyleDefinitions"/>
+ <rule ref="Squiz.CSS.DuplicateClassDefinition"/>
+ <rule ref="Squiz.CSS.EmptyClassDefinition"/>
+ <rule ref="Squiz.CSS.EmptyStyleDefinition"/>
+ <rule ref="Squiz.CSS.LowercaseStyleDefinition"/>
+ <rule ref="Squiz.CSS.Opacity"/>
+ <rule ref="Squiz.CSS.SemicolonSpacing"/>
+
+</ruleset>
