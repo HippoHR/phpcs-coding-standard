@@ -102,7 +102,7 @@
   </properties>
  </rule>
 
- 
+
  <!-- Method arguments with default values MUST go at the end of the argument list. -->
  <rule ref="PEAR.Functions.ValidDefaultValue"/>
 
@@ -122,6 +122,7 @@
  <rule ref="Hippo.Functions.FunctionCallSignature">
   <properties>
    <property name="allowMultipleArguments" value="false"/>
+   <property name="indent" value="2"/>
   </properties>
  </rule>
 
