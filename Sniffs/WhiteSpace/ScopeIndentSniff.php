@@ -1,4 +1,4 @@
-i<?php
+<?php
 /**
  * Hippo_Sniffs_Whitespace_ScopeIndentSniff.
  *
