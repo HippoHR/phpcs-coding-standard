@@ -71,6 +71,57 @@ class FruitBasket
   }
 
   /**
+   * Pick a fruit from the basket
+   * @param string $type Name of the preferred type of fruit
+   * @return Fruit
+   */
+  public function pickFruit( $type = null )
+  {
+    if( $this->canPickFruit( $type ) )
+    {
+      if( $type === null )
+      {
+        $index = rand( 0, count( $this->fruits ) );
+      }
+      else
+      {
+        $preferredFruits = [];
+        foreach( $this->fruits as $index => $Fruit )
+        {
+          if( $Fruit->type === $type )
+          {
+            $preferredFruits[] = $index;
+          }
+        }
+        $index = $preferredFruits[ rand( 0, count( $preferredFruits ) ) ];
+      }
+
+      return array_splice( $this->fruits, $index, 1 );
+    }
+  }
+
+  private function canPickFruit( $type = null )
+  {
+    return count( $this->fruits )
+      && (
+        $type === null
+        || $this->containsType( $type )
+      );
+  }
+
+  private function containsType( $type )
+  {
+    foreach( $this->fruits as $Fruit )
+    {
+      if( $Fruit->type === $type )
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Checks the state of a banana.
    *
    * @param Banana $Banana The banana to check
