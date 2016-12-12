@@ -1,0 +1,26 @@
+{
+    "linters": {
+        "merge-issues": {
+            "type": "merge-conflict"
+        },
+        "phpcs": {
+            "type": "phpcs",
+            "include": "(\\.php$)",
+            "exclude": [
+                "(Hippo/incorrect.php$)",
+                "(Hippo/correct.php$)",
+                "(Hippo/keywords.php$)"
+            ],
+            "bin": "vendor/bin/phpcs"
+        },
+        "phpcs-test": {
+            "type": "phpcs",
+            "include": "(^Hippo/correct.php$)",
+            "phpcs.standard": "./Hippo",
+            "bin": "vendor/bin/phpcs"
+        },
+        "generated": {
+            "type": "generated"
+        }
+    }
+}

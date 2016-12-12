@@ -18,7 +18,7 @@
  */
 class Hippo_Sniffs_Hippo_ControlStructureSniff implements PHP_CodeSniffer_Sniff
 {
-   private $csParenthesis = array(
+   private $_csParenthesis = array(
        T_WHILE,
        T_FOR,
        T_FOREACH,
@@ -67,7 +67,7 @@ class Hippo_Sniffs_Hippo_ControlStructureSniff implements PHP_CodeSniffer_Sniff
         // Get first token after the control structure definition.
         $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $stackPtr+1, null, true);
 
-        if( in_array( $tokens[$stackPtr]['code'], $this->csParenthesis ) )
+        if( in_array( $tokens[$stackPtr]['code'], $this->_csParenthesis ) )
         {
           $closeParenthesis = $tokens[$next]['parenthesis_closer'];
           $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, $closeParenthesis+1, null, true);

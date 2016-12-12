@@ -251,9 +251,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
                             && $tokens[($bracket + 1)]['code'] !== T_WHITESPACE
                         ) {
                             $error = 'Expected 1 space between opening bracket and type hint "%s"; 0 found';
-                            $data  = array(
-                                      $hint,
-                                     );
+                            $data  = array($hint);
                             $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpenHint', $data);
                         } else if($multiLine === false
                             && $tokens[($bracket + 1)]['code'] === T_WHITESPACE
@@ -278,9 +276,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
                     }
                 } elseif($multiLine === false) {
                     $error = 'Expected 1 spaces between opening bracket and argument "%s"; 0 found';
-                    $data  = array(
-                                  $arg,
-                                 );
+                    $data  = array($arg);
                     $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpen', $data);
                 }//end if
             }//end if

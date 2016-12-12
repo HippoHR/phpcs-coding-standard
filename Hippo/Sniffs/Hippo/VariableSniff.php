@@ -21,7 +21,7 @@
 class Hippo_Sniffs_Hippo_VariableSniff implements PHP_CodeSniffer_Sniff
 {
     // http://php.net/manual/en/reserved.variables.php
-    private $specialVars = array(
+    private $_specialVars = array(
         '$_SERVER',
         '$_REQUEST',
         '$_GET',
@@ -69,7 +69,7 @@ class Hippo_Sniffs_Hippo_VariableSniff implements PHP_CodeSniffer_Sniff
         //echo $var . "\n";
 
         // Exclude special variables.
-        if( in_array( $var, $this->specialVars ) )
+        if( in_array( $var, $this->_specialVars ) )
         {
             return;
         }

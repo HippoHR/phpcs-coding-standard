@@ -121,7 +121,7 @@ class Hippo_Sniffs_CSS_IndentationSniff implements PHP_CodeSniffer_Sniff
             }
 
             $currentLine = $tokens[$i]['line'];
-        }//end foreach
+        }//end for
 
     }//end process()
 

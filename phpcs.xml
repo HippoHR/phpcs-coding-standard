@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Hippo CS Coding Standard">
+    <description>The coding standard for the Hippo Coding Standard for PHP CodeSniffer itself.</description>
+
+    <rule ref="PHPCS" />
+</ruleset>

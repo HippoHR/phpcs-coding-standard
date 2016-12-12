@@ -32,9 +32,7 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
             PHP_CodeSniffer_Tokens::$assignmentTokens,
             PHP_CodeSniffer_Tokens::$arithmeticTokens,
             PHP_CodeSniffer_Tokens::$equalityTokens,
-            array(
-                T_STRING_CONCAT
-            )
+            array(T_STRING_CONCAT)
         ) );
     }//end register()
 
@@ -98,7 +96,8 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
             ( $nextType !== T_WHITESPACE && !$allowNoSpacesNext )
         )
         {
-            $error = 'Operators, comparison, assignment, arithmetic, concatenation and equality tokens must be surrounded by single spaces on both sides. Operator: ' . $tokens[$stackPtr]['content'];
+            $error = 'Operators, comparison, assignment, arithmetic, concatenation and equality tokens must be surrounded by single spaces on both sides. ';
+            $error .= 'Operator: ' . $tokens[$stackPtr]['content'];
             $phpcsFile->addError( $error, $stackPtr, 'OperatorSpacing' );
         }
     }//end process()

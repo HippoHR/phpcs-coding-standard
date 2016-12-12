@@ -25,9 +25,7 @@ class Hippo_Sniffs_Hippo_InitialIndentationSniff implements PHP_CodeSniffer_Snif
      */
     public function register()
     {
-        return array(
-            T_OPEN_TAG
-        );
+        return array(T_OPEN_TAG);
     }//end register()
 
 
