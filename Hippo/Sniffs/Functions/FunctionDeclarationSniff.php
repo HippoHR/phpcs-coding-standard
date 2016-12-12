@@ -4,9 +4,11 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
 
 /**
@@ -14,9 +16,11 @@
  *
  * Ensure single and multi-line function declarations are defined correctly.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
 class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer_Sniff
 {
@@ -48,23 +52,33 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
-        #############################################################
-        # Variant of PEAR/Sniffs/Functions/FunctionDeclarationSniff.php
-        #
-        # Changes:
-        #  - tabs are 2 spaces instead of 4
-        #  - opening brace should be on seperate line
-        #############################################################
-
+        // Variant of PEAR/Sniffs/Functions/FunctionDeclarationSniff.php.
+        //
+        // Changes:
+        // - tabs are 2 spaces instead of 4,
+        // - opening brace should be on seperate line.
         $tokens = $phpcsFile->getTokens();
 
-        // Opening brace should be on seperate line
+        // Opening brace should be on seperate line.
         $errorData = array($tokens[$stackPtr]['content']);
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
+            $methodProperties = $phpcsFile->getMethodProperties($stackPtr);
+            // If the method is abstract, we don't need a body.
+            if ($methodProperties['is_abstract'] === true) {
+                return;
+            }
+
+            // If the method is in a interface, we don't need a body.
+            if ($phpcsFile->hasCondition($stackPtr, T_INTERFACE) === true) {
+                return;
+            }
+
+            // The method should probably have a body.
             $error = 'Possible parse error: %s missing opening or closing brace';
             $phpcsFile->addWarning($error, $stackPtr, 'MissingBrace', $errorData);
             return;
         }
+
         $curlyBrace  = $tokens[$stackPtr]['scope_opener'];
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBrace - 1), $stackPtr, true);
         $classLine   = $tokens[$lastContent]['line'];
@@ -192,6 +206,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
 
     }//end processSingleLineDeclaration()
 
+
     /**
      * Processes mutli-line declarations.
      *
@@ -223,7 +238,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
         // The closing parenthesis must be on a new line, even
         // when checking abstract function definitions.
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
-        $prev = $phpcsFile->findPrevious(
+        $prev         = $phpcsFile->findPrevious(
             T_WHITESPACE,
             ($closeBracket - 1),
             null,
@@ -263,8 +278,8 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
         }//end if
 
         // Each line between the parenthesis should be indented 2 spaces.
-        $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
-        $lastLine     = $tokens[$openBracket]['line'];
+        $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
+        $lastLine    = $tokens[$openBracket]['line'];
         for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
             if ($tokens[$i]['line'] !== $lastLine) {
                 if ($i === $tokens[$stackPtr]['parenthesis_closer']
@@ -305,8 +320,8 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
             }
         }//end for
 
-/*
-        if (isset($tokens[$stackPtr]['scope_opener']) === true) {
+        /*
+            if (isset($tokens[$stackPtr]['scope_opener']) === true) {
             // The openning brace needs to be one space away
             // from the closing parenthesis.
             $next = $tokens[($closeBracket + 1)];
@@ -346,8 +361,8 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
                 $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line function declaration';
                 $phpcsFile->addError($error, $next, 'NoSpaceBeforeOpenBrace');
             }
-        }//end if
-*/
+            }//end if
+        */
 
     }//end processMultiLineDeclaration()
 
