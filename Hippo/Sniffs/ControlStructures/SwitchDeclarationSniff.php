@@ -4,9 +4,11 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
 
 /**
@@ -14,20 +16,19 @@
  *
  * Ensures all switch statements are defined correctly.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * This is a customized version of
+ *  PSR2/Sniffs/ControlStructures/SwitchDeclarationSniff.php
+ * Changes:
+ * - indentation of 2 spaces instead of 4.
+ *
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
+ * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
 class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSniffer_Sniff
 {
-   ############################################################################################
-   # This is a customized version of PSR2/Sniffs/ControlStructures/SwitchDeclarationSniff.php
-   #
-   # Changes:
-   #  - indentation of 2 spaces instead of 4
-   ############################################################################################
-
-
 
 
     /**
@@ -115,8 +116,9 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
                     $phpcsFile->addError($error, $nextCase, 'SpaceBeforeColon'.$type);
                 }
             } else {
-                $error = strtoupper($type).' statements must not be defined using curly braces';
-                $phpcsFile->addError($error, $nextCase, 'WrongOpener'.$type);
+                $error = '%s statements must be defined using a colon';
+                $data  = array(strtoupper($type));
+                $phpcsFile->addError($error, $nextCase, 'WrongOpener'.$type, $data);
             }
 
             $nextCloser = $tokens[$nextCase]['scope_closer'];
