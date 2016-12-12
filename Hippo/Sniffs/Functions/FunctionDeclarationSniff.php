@@ -103,9 +103,18 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
             $spaces = strlen($tokens[($stackPtr + 1)]['content']);
         }
 
-        if ($spaces !== 1) {
-            $error = 'Expected 1 space after FUNCTION keyword; %s found';
-            $data  = array($spaces);
+        $expectedSpaces = array(
+                           T_CLOSURE  => 0,
+                           T_FUNCTION => 1,
+                          );
+
+        $expectedNrOfSpaces = $expectedSpaces[$tokens[$stackPtr]['code']];
+        if ($spaces !== $expectedNrOfSpaces) {
+            $error = 'Expected %s spaces after FUNCTION keyword; %s found';
+            $data  = array(
+                      $expectedNrOfSpaces,
+                      $spaces,
+                     );
             $phpcsFile->addError($error, $stackPtr, 'SpaceAfterFunction', $data);
         }
 

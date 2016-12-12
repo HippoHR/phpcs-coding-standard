@@ -36,12 +36,12 @@ class FruitBasket
    */
   public function __construct()
   {
-    $this->origin = new array(
+    $this->origin = array(
      'banana' => 'tree',
      'strawberry' => 'plant'
     );
 
-    $this->fruits = new array();
+    $this->fruits = array();
   }
 
   /**
@@ -150,6 +150,27 @@ class FruitBasket
     }
 
     return false;
+  }
+
+  /**
+   * Sort the fruits in the basket
+   */
+  public function sort()
+  {
+    usort(
+      $this->fruits,
+      function( $FruitA, $FruitB )
+      {
+        $typeOfFruitA = $FruitA->type;
+        $typeOfFruitB = $FruitB->type;
+        if( $typeOfFruitA === $typeOfFruitB )
+        {
+          return 0;
+        }
+
+        return ( $typeOfFruitA < $typeOfFruitB ) ? -1 : 1;
+      }
+    );
   }
 }
 
