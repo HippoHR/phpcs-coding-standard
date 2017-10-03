@@ -4,27 +4,33 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Hippo\Sniffs\Functions;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff.
  *
  * Checks that arguments in function declarations are spaced correctly.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
  */
-class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements PHP_CodeSniffer_Sniff
+
+class FunctionDeclarationArgumentSpacingSniff implements Sniff
 {
 
     /**
      * How many spaces should surround the equals signs.
      *
-     * @var int
+     * @var integer
      */
     public $equalsSpacing = 0;
 
@@ -47,31 +53,30 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token in the
+     *                        stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
-        #######################################################
-        # Variant of Squiz/Sniffs/Functions/FunctionDeclarationArgumentSpacingSniff.php
-        #
-        # Changes:
-        # - Fixed spacing around parenthesis
-        #######################################################
-
+        //
+        // Variant of Squiz/Sniffs/Functions/FunctionDeclarationArgumentSpacingSniff.php
+        //
+        // Changes:
+        // - Fixed spacing around parenthesis.
+        //
         $this->equalsSpacing = (int) $this->equalsSpacing;
 
-        $tokens       = $phpcsFile->getTokens();
-        $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
+        $tokens      = $phpcsFile->getTokens();
+        $openBracket = $tokens[$stackPtr]['parenthesis_opener'];
         $this->processBracket($phpcsFile, $openBracket);
 
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
             $use = $phpcsFile->findNext(T_USE, ($tokens[$openBracket]['parenthesis_closer'] + 1), $tokens[$stackPtr]['scope_opener']);
             if ($use !== false) {
-                $openBracket  = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1), null);
+                $openBracket = $phpcsFile->findNext(T_OPEN_PARENTHESIS, ($use + 1), null);
                 $this->processBracket($phpcsFile, $openBracket);
             }
         }
@@ -82,13 +87,13 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
-     * @param int                  $openBracket The position of the open bracket
-     *                                          in the stack passed in $tokens.
+     * @param File $phpcsFile   The file being scanned.
+     * @param int  $openBracket The position of the open bracket
+     *                          in the stack passed in $tokens.
      *
      * @return void
      */
-    public function processBracket(PHP_CodeSniffer_File $phpcsFile, $openBracket)
+    public function processBracket(File $phpcsFile, $openBracket)
     {
         $tokens       = $phpcsFile->getTokens();
         $closeBracket = $tokens[$openBracket]['parenthesis_closer'];
@@ -97,7 +102,6 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
         $nextParam = $openBracket;
         $params    = array();
         while (($nextParam = $phpcsFile->findNext(T_VARIABLE, ($nextParam + 1), $closeBracket)) !== false) {
-
             $nextToken = $phpcsFile->findNext(T_WHITESPACE, ($nextParam + 1), ($closeBracket + 1), true);
             if ($nextToken === false) {
                 break;
@@ -253,28 +257,28 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
                             $error = 'Expected 1 space between opening bracket and type hint "%s"; 0 found';
                             $data  = array($hint);
                             $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpenHint', $data);
-                        } else if($multiLine === false
+                        } else if ($multiLine === false
                             && $tokens[($bracket + 1)]['code'] === T_WHITESPACE
                             && strlen($tokens[($bracket + 1)]['content']) !== 1
                         ) {
-                          $error = 'Expected 1 space between opening bracket and type hint "%s"; %s found';
-                          $data  = array(
-                                    $hint,
-                                    strlen($tokens[($bracket + 1)]['content']),
-                                   );
-                          $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpenHint', $data);
+                            $error = 'Expected 1 space between opening bracket and type hint "%s"; %s found';
+                            $data  = array(
+                                      $hint,
+                                      strlen($tokens[($bracket + 1)]['content']),
+                                     );
+                            $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpenHint', $data);
                         }
                     } else if ($multiLine === false
                         && $gap !== 1
                     ) {
                         $error = 'Expected 1 spaces between opening bracket and argument "%s"; %s found';
                         $data  = array(
-                                      $arg,
-                                      $gap,
-                                     );
+                                  $arg,
+                                  $gap,
+                                 );
                         $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpen', $data);
-                    }
-                } elseif($multiLine === false) {
+                    }//end if
+                } else if ($multiLine === false) {
                     $error = 'Expected 1 spaces between opening bracket and argument "%s"; 0 found';
                     $data  = array($arg);
                     $phpcsFile->addError($error, $nextToken, 'SpacingAfterOpen', $data);
@@ -282,7 +286,6 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
             }//end if
 
             $params[] = $nextParam;
-
         }//end while
 
         if (empty($params) === true) {
@@ -312,8 +315,7 @@ class Hippo_Sniffs_Functions_FunctionDeclarationArgumentSpacingSniff implements 
                           strlen($tokens[($closeBracket - 1)]['content']),
                          );
             $phpcsFile->addError($error, $closeBracket, 'SpacingBeforeClose', $data);
-
-        }
+        }//end if
 
     }//end processBracket()
 

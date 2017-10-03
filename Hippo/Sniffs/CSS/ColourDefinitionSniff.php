@@ -11,6 +11,10 @@
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
+namespace Hippo\Sniffs\CSS;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Squiz_Sniffs_CSS_ColourDefinitionSniff.
@@ -25,7 +29,8 @@
  * @version   Release: 1.4.3
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class Hippo_Sniffs_CSS_ColourDefinitionSniff implements PHP_CodeSniffer_Sniff
+
+class ColourDefinitionSniff implements Sniff
 {
 
     /**
@@ -51,13 +56,13 @@ class Hippo_Sniffs_CSS_ColourDefinitionSniff implements PHP_CodeSniffer_Sniff
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-     * @param int                  $stackPtr  The position in the stack where
-     *                                        the token was found.
+     * @param File $phpcsFile The file where the token was found.
+     * @param int  $stackPtr  The position in the stack where
+     *                        the token was found.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
         $colour = $tokens[$stackPtr]['content'];
@@ -84,5 +89,6 @@ class Hippo_Sniffs_CSS_ColourDefinitionSniff implements PHP_CodeSniffer_Sniff
         }
 
     }//end process()
+
 
 }//end class

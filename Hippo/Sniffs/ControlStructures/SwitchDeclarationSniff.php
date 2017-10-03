@@ -10,6 +10,10 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
+namespace Hippo\Sniffs\ControlStructures;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
 
 /**
  * Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff.
@@ -27,7 +31,8 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
-class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeSniffer_Sniff
+
+class SwitchDeclarationSniff implements Sniff
 {
 
 
@@ -46,13 +51,13 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token in the
+     *                        stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -69,7 +74,7 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
         $caseCount     = 0;
         $foundDefault  = false;
 
-        while (($nextCase = $this->_findNextCase($phpcsFile, ($nextCase + 1), $switch['scope_closer'])) !== false) {
+        while (($nextCase = $this->findNextCase($phpcsFile, ($nextCase + 1), $switch['scope_closer'])) !== false) {
             if ($tokens[$nextCase]['code'] === T_DEFAULT) {
                 $type         = 'default';
                 $foundDefault = true;
@@ -148,7 +153,7 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
                 // This case statement has content. If the next case or default comes
                 // before the closer, it means we dont have a terminating statement
                 // and instead need a comment.
-                $nextCode = $this->_findNextCase($phpcsFile, ($tokens[$nextCase]['scope_opener'] + 1), $nextCloser);
+                $nextCode = $this->findNextCase($phpcsFile, ($tokens[$nextCase]['scope_opener'] + 1), $nextCloser);
                 if ($nextCode !== false) {
                     $prevCode = $phpcsFile->findPrevious(T_WHITESPACE, ($nextCode - 1), $nextCase, true);
                     if ($tokens[$prevCode]['code'] !== T_COMMENT) {
@@ -167,13 +172,13 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
      *
      * Note that nested switches are ignored.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position to start looking at.
-     * @param int                  $end       The position to stop looking at.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position to start looking at.
+     * @param int  $end       The position to stop looking at.
      *
      * @return int | bool
      */
-    private function _findNextCase(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $end)
+    private function findNextCase(File $phpcsFile, $stackPtr, $end)
     {
         $tokens = $phpcsFile->getTokens();
         while (($stackPtr = $phpcsFile->findNext(array(T_CASE, T_DEFAULT, T_SWITCH), $stackPtr, $end)) !== false) {
@@ -188,7 +193,7 @@ class Hippo_Sniffs_ControlStructures_SwitchDeclarationSniff implements PHP_CodeS
 
         return $stackPtr;
 
-    }//end _findNextCase()
+    }//end findNextCase()
 
 
 }//end class

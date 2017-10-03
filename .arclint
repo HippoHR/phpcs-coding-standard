@@ -11,6 +11,7 @@
                 "(Hippo/correct.php$)",
                 "(Hippo/keywords.php$)"
             ],
+            "phpcs.standard": "vendor/squizlabs/php_codesniffer/phpcs.xml.dist",
             "bin": "vendor/bin/phpcs"
         },
         "phpcs-test": {

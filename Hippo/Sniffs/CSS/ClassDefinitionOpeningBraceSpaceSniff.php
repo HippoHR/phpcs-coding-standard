@@ -11,6 +11,11 @@
  * @license   https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
+namespace Hippo\Sniffs\CSS;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Squiz_Sniffs_CSS_ClassDefinitionOpeningBraceSpaceSniff.
@@ -26,7 +31,8 @@
  * @version   Release: 1.4.3
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
-class Hippo_Sniffs_CSS_ClassDefinitionOpeningBraceSpaceSniff implements PHP_CodeSniffer_Sniff
+
+class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
 {
 
     /**
@@ -52,13 +58,13 @@ class Hippo_Sniffs_CSS_ClassDefinitionOpeningBraceSpaceSniff implements PHP_Code
     /**
      * Processes the tokens that this sniff is interested in.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file where the token was found.
-     * @param int                  $stackPtr  The position in the stack where
-     *                                        the token was found.
+     * @param File $phpcsFile The file where the token was found.
+     * @param int  $stackPtr  The position in the stack where
+     *                        the token was found.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
 
@@ -70,7 +76,11 @@ class Hippo_Sniffs_CSS_ClassDefinitionOpeningBraceSpaceSniff implements PHP_Code
             if ($content !== PHP_EOL) {
                 $length = strlen($content);
                 if ($length === 1) {
-                    $length = ($content === ' ' ? 'space' : 'tab');
+                    if ($content === ' ') {
+                        $length = 'space';
+                    } else {
+                        $length = 'tab';
+                    }
                 }
 
                 $error = 'Expected 1 newline before opening brace of class definition; %s found';
@@ -79,7 +89,7 @@ class Hippo_Sniffs_CSS_ClassDefinitionOpeningBraceSpaceSniff implements PHP_Code
             }
         }//end if
 
-        $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false) {
             return;
         }

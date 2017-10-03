@@ -4,41 +4,41 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Hippo\Sniffs\Functions;
 
-if (class_exists('Hippo_Sniffs_Functions_FunctionDeclarationSniff', true) === false) {
-    $error = 'Class Hippo_Sniffs_Functions_FunctionDeclarationSniff not found';
-    throw new PHP_CodeSniffer_Exception($error);
-}
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Squiz_Sniffs_Functions_MultiLineFunctionDeclarationSniff.
  *
  * Ensure single and multi-line function declarations are defined correctly.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
  */
-class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sniffs_Functions_FunctionDeclarationSniff
+
+class MultiLineFunctionDeclarationSniff extends FunctionDeclarationSniff
 {
 
 
     /**
      * Processes mutli-line declarations.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
-     * @param array                $tokens    The stack of tokens that make up
-     *                                        the file.
+     * @param File  $phpcsFile The file being scanned.
+     * @param int   $stackPtr  The position of the current token
+     *                         in the stack passed in $tokens.
+     * @param array $tokens    The stack of tokens that make up
+     *                         the file.
      *
      * @return void
      */
-    public function processMultiLineDeclaration(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens)
+    public function processMultiLineDeclaration(File $phpcsFile, $stackPtr, $tokens)
     {
         // We do everything the parent sniff does, and a bit more.
         parent::processMultiLineDeclaration($phpcsFile, $stackPtr, $tokens);
@@ -71,17 +71,17 @@ class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sni
     /**
      * Processes the contents of a single set of brackets.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
-     * @param int                  $openBracket The position of the open bracket
-     *                                          in the stack passed in $tokens.
-     * @param array                $tokens      The stack of tokens that make up
-     *                                          the file.
-     * @param string               $type        The type of the token the brackets
-     *                                          belong to (function or use).
+     * @param File   $phpcsFile   The file being scanned.
+     * @param int    $openBracket The position of the open bracket
+     *                            in the stack passed in $tokens.
+     * @param array  $tokens      The stack of tokens that make up
+     *                            the file.
+     * @param string $type        The type of the token the brackets
+     *                            belong to (function or use).
      *
      * @return void
      */
-    public function processBracket(PHP_CodeSniffer_File $phpcsFile, $openBracket, $tokens, $type='function')
+    public function processBracket(File $phpcsFile, $openBracket, $tokens, $type='function')
     {
         $errorPrefix = '';
         if ($type === 'use') {
@@ -123,7 +123,7 @@ class Hippo_Sniffs_Functions_MultiLineFunctionDeclarationSniff extends Hippo_Sni
 
                 $lastCommaLine = $tokens[$i]['line'];
             }
-        }
+        }//end for
 
     }//end processBracket()
 

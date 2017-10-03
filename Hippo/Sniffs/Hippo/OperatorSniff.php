@@ -10,6 +10,11 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
+namespace Hippo\Sniffs\Hippo;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Hippo_Sniffs_Hippo_OperatorSniff.
@@ -20,7 +25,8 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
-class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
+
+class OperatorSniff implements Sniff
 {
 
 
@@ -33,12 +39,12 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
     {
         return array_unique(
             array_merge(
-                PHP_CodeSniffer_Tokens::$operators,
-                PHP_CodeSniffer_Tokens::$booleanOperators,
-                PHP_CodeSniffer_Tokens::$comparisonTokens,
-                PHP_CodeSniffer_Tokens::$assignmentTokens,
-                PHP_CodeSniffer_Tokens::$arithmeticTokens,
-                PHP_CodeSniffer_Tokens::$equalityTokens,
+                Tokens::$operators,
+                Tokens::$booleanOperators,
+                Tokens::$comparisonTokens,
+                Tokens::$assignmentTokens,
+                Tokens::$arithmeticTokens,
+                Tokens::$equalityTokens,
                 array(T_STRING_CONCAT)
             )
         );
@@ -49,13 +55,13 @@ class Hippo_Sniffs_Hippo_OperatorSniff implements PHP_CodeSniffer_Sniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile All the tokens found in the document.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param File $phpcsFile All the tokens found in the document.
+     * @param int  $stackPtr  The position of the current token
+     *                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // Get tokens.
         $tokens = $phpcsFile->getTokens();

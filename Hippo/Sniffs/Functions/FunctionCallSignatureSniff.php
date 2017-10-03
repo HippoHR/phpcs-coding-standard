@@ -4,32 +4,39 @@
  *
  * PHP version 5
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
+ * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  */
+namespace Hippo\Sniffs\Functions;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Util\Tokens;
 
 /**
  * Hippo_Sniffs_Functions_FunctionCallSignatureSniff.
  *
- * @category  PHP
- * @package   PHP_CodeSniffer
- * @author    Dennis Broeks <dennis@uitzendbureau.nl>
+ * @category PHP
+ * @package  PHP_CodeSniffer
+ * @author   Dennis Broeks <dennis@uitzendbureau.nl>
  */
-class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniffer_Sniff
+
+class FunctionCallSignatureSniff implements Sniff
 {
 
     /**
      * The number of spaces code should be indented.
      *
-     * @var int
+     * @var integer
      */
     public $indent = 4;
 
     /**
      * If TRUE, multiple arguments can be defined per line in a multi-line call.
      *
-     * @var bool
+     * @var boolean
      */
     public $allowMultipleArguments = true;
 
@@ -49,25 +56,24 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token
+     *                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
-        #######################################################################
-        # Variant of PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php
-        #
-        # Changes:
-        # - Fixed spaces around parenthesis
-        #######################################################################
-
+        //
+        // Variant of PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php
+        //
+        // Changes:
+        // - Fixed spaces around parenthesis.
+        //
         $tokens = $phpcsFile->getTokens();
 
         // Find the next non-empty token.
-        $openBracket = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
+        $openBracket = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
         if ($tokens[$openBracket]['code'] !== T_OPEN_PARENTHESIS) {
             // Not a function call.
@@ -80,7 +86,7 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
         }
 
         // Find the previous non-empty token.
-        $search   = PHP_CodeSniffer_Tokens::$emptyTokens;
+        $search   = Tokens::$emptyTokens;
         $search[] = T_BITWISE_AND;
         $previous = $phpcsFile->findPrevious($search, ($stackPtr - 1), null, true);
         if ($tokens[$previous]['code'] === T_FUNCTION) {
@@ -98,7 +104,7 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
 
         $next = $phpcsFile->findNext(T_WHITESPACE, ($closeBracket + 1), null, true);
         if ($tokens[$next]['code'] === T_SEMICOLON) {
-            if (in_array($tokens[($closeBracket + 1)]['code'], PHP_CodeSniffer_Tokens::$emptyTokens) === true) {
+            if (in_array($tokens[($closeBracket + 1)]['code'], Tokens::$emptyTokens) === true) {
                 $error = 'Space after closing parenthesis of function call prohibited';
                 $phpcsFile->addError($error, $closeBracket, 'SpaceAfterCloseBracket');
             }
@@ -117,34 +123,35 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
     /**
      * Processes single-line calls.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
-     * @param int                  $stackPtr    The position of the current token
-     *                                          in the stack passed in $tokens.
-     * @param int                  $openBracket The position of the openning bracket
-     *                                          in the stack passed in $tokens.
-     * @param array                $tokens      The stack of tokens that make up
-     *                                          the file.
+     * @param File  $phpcsFile   The file being scanned.
+     * @param int   $stackPtr    The position of the current token
+     *                           in the stack passed in $tokens.
+     * @param int   $openBracket The position of the openning bracket
+     *                           in the stack passed in $tokens.
+     * @param array $tokens      The stack of tokens that make up
+     *                           the file.
      *
      * @return void
      */
-    public function processSingleLineCall(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function processSingleLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
     {
         // In case of no arguments, no spaces are allowed.
-        $between = $phpcsFile->findNext(T_WHITESPACE, ($openBracket + 1), null, true);
+        $between           = $phpcsFile->findNext(T_WHITESPACE, ($openBracket + 1), null, true);
         $betweenInclSpaces = $phpcsFile->findNext(null, ($openBracket + 1), null, true);
-        $closer = $tokens[$openBracket]['parenthesis_closer'];
+        $closer            = $tokens[$openBracket]['parenthesis_closer'];
 
-        if( $tokens[$betweenInclSpaces]['code'] === T_WHITESPACE
-            && $tokens[$between]['code'] === T_CLOSE_PARENTHESIS ) {
-          // no arguments
-          $error = 'No space allowed in function call without arguments';
-          $phpcsFile->addError($error, $stackPtr, 'SpaceAfterOpenBracket');
-        } elseif( $between !== $closer ) {
+        if ($tokens[$betweenInclSpaces]['code'] === T_WHITESPACE
+            && $tokens[$between]['code'] === T_CLOSE_PARENTHESIS
+        ) {
+            // No arguments.
+            $error = 'No space allowed in function call without arguments';
+            $phpcsFile->addError($error, $stackPtr, 'SpaceAfterOpenBracket');
+        } else if ($between !== $closer) {
             if ($tokens[($openBracket + 1)]['code'] !== T_WHITESPACE) {
                 // Checking this: $value = my_function( [*]... ).
                 $error = 'Space required after opening parenthesis of function call';
                 $phpcsFile->addError($error, $stackPtr, 'SpaceAfterOpenBracket');
-            } elseif ($tokens[($openBracket + 1)]['code'] === T_WHITESPACE
+            } else if ($tokens[($openBracket + 1)]['code'] === T_WHITESPACE
                 && strlen($tokens[($openBracket + 1)]['content']) !== 1
             ) {
                 $error = 'Only one space allowed after opening parenthesis of function call, found multiple';
@@ -155,13 +162,13 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
                 // Checking this: $value = my_function( ...[*] ).
                 $error = 'Space before closing parenthesis of function call required';
                 $phpcsFile->addError($error, $closer, 'SpaceBeforeCloseBracket');
-            } else if($tokens[($closer - 1)]['code'] === T_WHITESPACE
+            } else if ($tokens[($closer - 1)]['code'] === T_WHITESPACE
                 && strlen($tokens[($closer - 1)]['content']) !== 1
             ) {
                 $error = 'Only one space allowed before closing parenthesis of function call, found multiple';
                 $phpcsFile->addError($error, $stackPtr, 'SpaceBeforeCloseBracket');
             }
-        }
+        }//end if
 
     }//end processSingleLineCall()
 
@@ -169,17 +176,17 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
     /**
      * Processes multi-line calls.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
-     * @param int                  $stackPtr    The position of the current token
-     *                                          in the stack passed in $tokens.
-     * @param int                  $openBracket The position of the openning bracket
-     *                                          in the stack passed in $tokens.
-     * @param array                $tokens      The stack of tokens that make up
-     *                                          the file.
+     * @param File  $phpcsFile   The file being scanned.
+     * @param int   $stackPtr    The position of the current token
+     *                           in the stack passed in $tokens.
+     * @param int   $openBracket The position of the openning bracket
+     *                           in the stack passed in $tokens.
+     * @param array $tokens      The stack of tokens that make up
+     *                           the file.
      *
      * @return void
      */
-    public function processMultiLineCall(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $openBracket, $tokens)
+    public function processMultiLineCall(File $phpcsFile, $stackPtr, $openBracket, $tokens)
     {
         // We need to work out how far indented the function
         // call itself is, so we can work out how far to
@@ -211,12 +218,12 @@ class Hippo_Sniffs_Functions_FunctionCallSignatureSniff implements PHP_CodeSniff
                 $lastLine = $tokens[$i]['line'];
 
                 // Ignore heredoc indentation.
-                if (in_array($tokens[$i]['code'], PHP_CodeSniffer_Tokens::$heredocTokens) === true) {
+                if (in_array($tokens[$i]['code'], Tokens::$heredocTokens) === true) {
                     continue;
                 }
 
                 // Ignore multi-line string indentation.
-                if (in_array($tokens[$i]['code'], PHP_CodeSniffer_Tokens::$stringTokens) === true) {
+                if (in_array($tokens[$i]['code'], Tokens::$stringTokens) === true) {
                     if ($tokens[$i]['code'] === $tokens[($i - 1)]['code']) {
                         continue;
                     }

@@ -1,5 +1,12 @@
 {
+  "scripts": {
+    "test": [
+      "phpcs --config-set installed_paths ../../../Hippo",
+      "phpunit --filter \"Hippo\" --bootstrap vendor/squizlabs/php_codesniffer/tests/bootstrap.php vendor/squizlabs/php_codesniffer/tests/AllTests.php"
+    ]
+  },
   "require-dev": {
-    "squizlabs/php_codesniffer": "2.7.0"
+    "squizlabs/php_codesniffer": "3.1.0",
+    "phpunit/phpunit": "6.3.1"
   }
 }

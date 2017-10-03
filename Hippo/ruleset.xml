@@ -156,6 +156,14 @@
  <rule ref="Squiz.CSS.DuplicateClassDefinition"/>
  <rule ref="Squiz.CSS.EmptyClassDefinition"/>
  <rule ref="Squiz.CSS.EmptyStyleDefinition"/>
+ <rule ref="Squiz.CSS.Indentation">
+  <properties>
+   <property name="indent" value="2"/>
+  </properties>
+ </rule>
+ <rule ref="Squiz.CSS.Indentation.BlankLine">
+  <severity>0</severity>
+ </rule>
  <rule ref="Squiz.CSS.LowercaseStyleDefinition"/>
  <rule ref="Squiz.CSS.Opacity"/>
  <rule ref="Squiz.CSS.SemicolonSpacing"/>

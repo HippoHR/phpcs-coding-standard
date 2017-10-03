@@ -10,6 +10,12 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
+namespace Hippo\Sniffs\Functions;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\OpeningFunctionBraceBsdAllmanSniff;
+use PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\OpeningFunctionBraceKernighanRitchieSniff;
 
 /**
  * Hippo_Sniffs_Functions_FunctionDeclarationSniff.
@@ -22,7 +28,8 @@
  * @license  https://github.com/squizlabs/PHP_CodeSniffer/blob/master/licence.txt BSD Licence
  * @link     https://github.com/HippoHR/phpcs-coding-standard
  */
-class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer_Sniff
+
+class FunctionDeclarationSniff implements Sniff
 {
 
 
@@ -44,13 +51,13 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
     /**
      * Processes this test, when one of its tokens is encountered.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
+     * @param File $phpcsFile The file being scanned.
+     * @param int  $stackPtr  The position of the current token
+     *                        in the stack passed in $tokens.
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    public function process(File $phpcsFile, $stackPtr)
     {
         // Variant of PEAR/Sniffs/Functions/FunctionDeclarationSniff.php.
         //
@@ -187,28 +194,20 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
      *
      * Just uses the Generic BSD-Allman brace sniff.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
-     * @param array                $tokens    The stack of tokens that make up
-     *                                        the file.
+     * @param File  $phpcsFile The file being scanned.
+     * @param int   $stackPtr  The position of the current token
+     *                         in the stack passed in $tokens.
+     * @param array $tokens    The stack of tokens that make up
+     *                         the file.
      *
      * @return void
      */
-    public function processSingleLineDeclaration(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens)
+    public function processSingleLineDeclaration(File $phpcsFile, $stackPtr, $tokens)
     {
         if ($tokens[$stackPtr]['code'] === T_CLOSURE) {
-            if (class_exists('Generic_Sniffs_Functions_OpeningFunctionBraceKernighanRitchieSniff', true) === false) {
-                throw new PHP_CodeSniffer_Exception('Class Generic_Sniffs_Functions_OpeningFunctionBraceKernighanRitchieSniff not found');
-            }
-
-            $sniff = new Generic_Sniffs_Functions_OpeningFunctionBraceKernighanRitchieSniff();
+            $sniff = new OpeningFunctionBraceKernighanRitchieSniff();
         } else {
-            if (class_exists('Generic_Sniffs_Functions_OpeningFunctionBraceBsdAllmanSniff', true) === false) {
-                throw new PHP_CodeSniffer_Exception('Class Generic_Sniffs_Functions_OpeningFunctionBraceBsdAllmanSniff not found');
-            }
-
-            $sniff = new Generic_Sniffs_Functions_OpeningFunctionBraceBsdAllmanSniff();
+            $sniff = new OpeningFunctionBraceBsdAllmanSniff();
         }
 
         $sniff->process($phpcsFile, $stackPtr);
@@ -219,15 +218,15 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
     /**
      * Processes mutli-line declarations.
      *
-     * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token
-     *                                        in the stack passed in $tokens.
-     * @param array                $tokens    The stack of tokens that make up
-     *                                        the file.
+     * @param File  $phpcsFile The file being scanned.
+     * @param int   $stackPtr  The position of the current token
+     *                         in the stack passed in $tokens.
+     * @param array $tokens    The stack of tokens that make up
+     *                         the file.
      *
      * @return void
      */
-    public function processMultiLineDeclaration(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $tokens)
+    public function processMultiLineDeclaration(File $phpcsFile, $stackPtr, $tokens)
     {
         // We need to work out how far indented the function
         // declaration itself is, so we can work out how far to
@@ -328,50 +327,6 @@ class Hippo_Sniffs_Functions_FunctionDeclarationSniff implements PHP_CodeSniffer
                 continue;
             }
         }//end for
-
-        /*
-            if (isset($tokens[$stackPtr]['scope_opener']) === true) {
-            // The openning brace needs to be one space away
-            // from the closing parenthesis.
-            $next = $tokens[($closeBracket + 1)];
-            if ($next['code'] !== T_WHITESPACE) {
-                $length = 0;
-            } else if ($next['content'] === $phpcsFile->eolChar) {
-                $length = -1;
-            } else {
-                $length = strlen($next['content']);
-            }
-
-            if ($length !== 1) {
-                $data = array($length);
-                $code = 'SpaceBeforeOpenBrace';
-
-                $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line function declaration; found ';
-                if ($length === -1) {
-                    $error .= 'newline';
-                    $code   = 'NewlineBeforeOpenBrace';
-                } else {
-                    $error .= '%s spaces';
-                }
-
-                $phpcsFile->addError($error, ($closeBracket + 1), $code, $data);
-                return;
-            }
-
-            // And just in case they do something funny before the brace...
-            $next = $phpcsFile->findNext(
-                T_WHITESPACE,
-                ($closeBracket + 1),
-                null,
-                true
-            );
-
-            if ($next !== false && $tokens[$next]['code'] !== T_OPEN_CURLY_BRACKET) {
-                $error = 'There must be a single space between the closing parenthesis and the opening brace of a multi-line function declaration';
-                $phpcsFile->addError($error, $next, 'NoSpaceBeforeOpenBrace');
-            }
-            }//end if
-        */
 
     }//end processMultiLineDeclaration()
 

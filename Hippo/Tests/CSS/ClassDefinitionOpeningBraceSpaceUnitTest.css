@@ -1,0 +1,78 @@
+body{
+  font-family: Arial;
+}
+
+td {
+  margin: 40px;
+}
+
+/*
+#AdminScreenModeWidgetType-tab_pane-containers .TabPaneWidgetType-tab-selected-left {
+    background: transparent url(images/ScreenImages/tab_on_left.png) no-repeat;
+}
+#AdminScreenModeWidgetType-tab_pane-containers .TabPaneWidgetType-tab-selected-right {
+    background: transparent url(images/ScreenImages/tab_on_right.png) no-repeat;
+}
+*/
+
+
+.GUITextBox.container:after {}
+
+@media screen and (max-device-width: 769px) {
+
+  header #logo img {
+    max-width: 100%;
+    padding: 20px;
+    margin: 40px;
+  }
+}
+
+@media screen and (max-device-width: 769px)
+{
+  .foo
+  {
+    border-color: orange;
+  }
+}
+
+.foo
+{
+  border: none;
+}
+
+.bar
+{
+
+  text-decoration: underline;
+
+}
+
+.mortgage-calculator h2 {
+  background: #072237;
+  color: #fff;
+  font-weight: normal;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 0 0 30px;
+}
+
+.mortgage-calculator h3
+
+{
+  background: #bada55;
+  color: #fff;
+  font-weight: normal;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 0 0 20px;
+}
+
+.x
+ {
+  font-style: italic;
+}
+
+.y
+	{
+  font-style: italic;
+}
