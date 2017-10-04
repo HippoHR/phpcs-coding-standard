@@ -1,7 +1,10 @@
 {
   "scripts": {
+    "pre-test": [
+      "phpcs --config-set installed_paths ../../../Hippo"
+    ],
     "test": [
-      "phpcs --config-set installed_paths ../../../Hippo",
+      "@composer pre-test",
       "phpunit --filter \"Hippo\" --bootstrap vendor/squizlabs/php_codesniffer/tests/bootstrap.php vendor/squizlabs/php_codesniffer/tests/AllTests.php"
     ]
   },
