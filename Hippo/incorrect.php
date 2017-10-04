@@ -3,6 +3,7 @@
 namespace YY\FruitBasket;
 
 use Banana;
+use Exception;
 
 /**
  * Manages a fruit basket. This is a very long line. A very, very, very, very long line =) We should cut off the line if the limit is reached. We should be
@@ -73,6 +74,10 @@ class FruitBasket
     {
       $this->fruits[] = $Fruit;
     }
+
+    // Lets see if the fruit objects are in the array $this->fruits
+    var_dump( $this->fruits );
+    print_r( $this->fruits );
   }
 
   /**

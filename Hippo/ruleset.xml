@@ -141,6 +141,12 @@
  When the ending list (whether or arguments or variables) is split across multiple lines, the closing parenthesis and opening brace MUST be placed together on their own line with one space between them. -->
  <!-- Using Hippo.Functions.MultiLineFunctionDeclaration here -->
 
+ <rule ref="Squiz.PHP.DiscouragedFunctions">
+  <properties>
+   <property name="error" value="true" />
+  </properties>
+ </rule>
+
  <rule ref="Generic.Commenting.Todo"/>
 
 
