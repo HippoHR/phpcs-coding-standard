@@ -1,4 +1,6 @@
 {
+  "name": "hippohr/phpcs-coding-standard",
+  "description": "",
   "scripts": {
     "pre-test": [
       "phpcs --config-set installed_paths ../../../Hippo"
