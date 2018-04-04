@@ -71,6 +71,16 @@ class FruitBasket
   }
 
   /**
+   * Add one or more fruits to the basket.
+   *
+   * @param Fruit ...$fruits One or more fruits to add to the basket
+   */
+  public function add( Fruit ...$fruits )
+  {
+    $this->addFruits( $fruits );
+  }
+
+  /**
    * Pick a fruit from the basket
    * @param string $type Name of the preferred type of fruit
    * @return Fruit
@@ -170,6 +180,20 @@ class FruitBasket
 
         return ( $typeOfFruitA < $typeOfFruitB ) ? -1 : 1;
       }
+    );
+  }
+
+  /**
+   * Get a simple description of the fruit basket.
+   * @return string
+   */
+  public function __toString()
+  {
+    $nrOfFruits = count( $this->fruits );
+    return sprintf(
+      'There are currently %1$d fruits in the basket. That means you can pick %1$d fruits before the basket is empty.'
+      . ' Or you could give %1$d friends one piece of fruit each.',
+      $nrOfFruits
     );
   }
 }

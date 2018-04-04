@@ -30,15 +30,15 @@ class ControlStructureSniff implements Sniff
      *
      * @var array
      */
-    private $csParenthesis = array(
-                              T_WHILE,
-                              T_FOR,
-                              T_FOREACH,
-                              T_IF,
-                              T_ELSEIF,
-                              T_CATCH,
-                              T_SWITCH,
-                             );
+    private $csParenthesis = [
+        T_WHILE,
+        T_FOR,
+        T_FOREACH,
+        T_IF,
+        T_ELSEIF,
+        T_CATCH,
+        T_SWITCH,
+    ];
 
 
     /**
@@ -48,17 +48,17 @@ class ControlStructureSniff implements Sniff
      */
     public function register()
     {
-        return array(
-                T_WHILE,
-                T_FOR,
-                T_FOREACH,
-                T_IF,
-                T_ELSEIF,
-                T_ELSE,
-                T_TRY,
-                T_CATCH,
-                T_SWITCH,
-               );
+        return [
+            T_WHILE,
+            T_FOR,
+            T_FOREACH,
+            T_IF,
+            T_ELSEIF,
+            T_ELSE,
+            T_TRY,
+            T_CATCH,
+            T_SWITCH,
+        ];
 
     }//end register()
 

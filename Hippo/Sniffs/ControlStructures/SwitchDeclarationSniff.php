@@ -43,7 +43,7 @@ class SwitchDeclarationSniff implements Sniff
      */
     public function register()
     {
-        return array(T_SWITCH);
+        return [T_SWITCH];
 
     }//end register()
 
@@ -86,10 +86,10 @@ class SwitchDeclarationSniff implements Sniff
             if ($tokens[$nextCase]['content'] !== strtolower($tokens[$nextCase]['content'])) {
                 $expected = strtolower($tokens[$nextCase]['content']);
                 $error    = strtoupper($type).' keyword must be lowercase; expected "%s" but found "%s"';
-                $data     = array(
-                             $expected,
-                             $tokens[$nextCase]['content'],
-                            );
+                $data     = [
+                    $expected,
+                    $tokens[$nextCase]['content'],
+                ];
                 $phpcsFile->addError($error, $nextCase, $type.'NotLower', $data);
             }
 
@@ -102,7 +102,7 @@ class SwitchDeclarationSniff implements Sniff
             $blankLines = ($tokens[$nextCase]['line'] - $tokens[$prevCode]['line'] - 1);
             if ($blankLines !== 0) {
                 $error = 'Blank lines are not allowed between case statements; found %s';
-                $data  = array($blankLines);
+                $data  = [$blankLines];
                 $phpcsFile->addError($error, $nextCase, 'SpaceBetweenCase', $data);
             }
 
@@ -122,7 +122,7 @@ class SwitchDeclarationSniff implements Sniff
                 }
             } else {
                 $error = '%s statements must be defined using a colon';
-                $data  = array(strtoupper($type));
+                $data  = [strtoupper($type)];
                 $phpcsFile->addError($error, $nextCase, 'WrongOpener'.$type, $data);
             }
 
@@ -181,7 +181,7 @@ class SwitchDeclarationSniff implements Sniff
     private function findNextCase(File $phpcsFile, $stackPtr, $end)
     {
         $tokens = $phpcsFile->getTokens();
-        while (($stackPtr = $phpcsFile->findNext(array(T_CASE, T_DEFAULT, T_SWITCH), $stackPtr, $end)) !== false) {
+        while (($stackPtr = $phpcsFile->findNext([T_CASE, T_DEFAULT, T_SWITCH], $stackPtr, $end)) !== false) {
             // Skip nested SWITCH statements; they are handled on their own.
             if ($tokens[$stackPtr]['code'] === T_SWITCH) {
                 $stackPtr = $tokens[$stackPtr]['scope_closer'];

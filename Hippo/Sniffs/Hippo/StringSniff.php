@@ -36,12 +36,12 @@ class StringSniff implements Sniff
      */
     public function register()
     {
-        return array(
-                // No var: 'Hello.', "Hello.", "Hello.\n".
-                T_CONSTANT_ENCAPSED_STRING,
-                // Contains var: "Hello $name.".
-                T_DOUBLE_QUOTED_STRING,
-               );
+        return [
+            // No var: 'Hello.', "Hello.", "Hello.\n".
+            T_CONSTANT_ENCAPSED_STRING,
+            // Contains var: "Hello $name.".
+            T_DOUBLE_QUOTED_STRING,
+        ];
 
     }//end register()
 

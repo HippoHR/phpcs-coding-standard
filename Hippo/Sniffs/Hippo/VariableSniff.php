@@ -32,19 +32,19 @@ class VariableSniff implements Sniff
      *
      * @var array
      */
-    private $specialVars = array(
-                            '$_SERVER',
-                            '$_REQUEST',
-                            '$_GET',
-                            '$_POST',
-                            '$_SESSION',
-                            '$_FILES',
-                            '$_ENV',
-                            '$_COOKIE',
-                            '$php_errormsg',
-                            '$HTTP_RAW_POST_DATA',
-                            '$http_response_header',
-                           );
+    private $specialVars = [
+        '$_SERVER',
+        '$_REQUEST',
+        '$_GET',
+        '$_POST',
+        '$_SESSION',
+        '$_FILES',
+        '$_ENV',
+        '$_COOKIE',
+        '$php_errormsg',
+        '$HTTP_RAW_POST_DATA',
+        '$http_response_header',
+    ];
 
 
     /**
@@ -54,7 +54,7 @@ class VariableSniff implements Sniff
      */
     public function register()
     {
-        return array(T_VARIABLE);
+        return [T_VARIABLE];
 
     }//end register()
 

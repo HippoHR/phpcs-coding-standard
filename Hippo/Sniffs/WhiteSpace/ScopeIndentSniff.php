@@ -52,7 +52,7 @@ class ScopeIndentSniff implements Sniff
      *
      * @var array(integer)
      */
-    protected $nonIndentingScopes = array();
+    protected $nonIndentingScopes = [];
 
 
     /**
@@ -142,10 +142,10 @@ class ScopeIndentSniff implements Sniff
 
             if ($exact === true || $tokens[$firstToken]['column'] < $expectedIndent) {
                 $error = 'Line indented incorrectly; expected %s spaces, found %s';
-                $data  = array(
-                          ($expectedIndent - 1),
-                          ($tokens[$firstToken]['column'] - 1),
-                         );
+                $data  = [
+                    ($expectedIndent - 1),
+                    ($tokens[$firstToken]['column'] - 1),
+                ];
                 $phpcsFile->addError($error, $stackPtr, 'Incorrect', $data);
             }
         }//end if
@@ -303,10 +303,10 @@ class ScopeIndentSniff implements Sniff
                         }
 
                         $error .= '%s spaces, found %s';
-                        $data   = array(
-                                   ($indent - 1),
-                                   ($column - 1),
-                                  );
+                        $data   = [
+                            ($indent - 1),
+                            ($column - 1),
+                        ];
                         // This one gives false positives,
                         // so I temporarily disabled it.
                         // $phpcsFile->addError($error, $firstToken, $type, $data);.
@@ -331,7 +331,7 @@ class ScopeIndentSniff implements Sniff
      */
     protected function calculateExpectedIndent(array $tokens, $stackPtr)
     {
-        $conditionStack = array();
+        $conditionStack = [];
 
         $inParenthesis = false;
         if (isset($tokens[$stackPtr]['nested_parenthesis']) === true

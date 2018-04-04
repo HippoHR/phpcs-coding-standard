@@ -26,19 +26,19 @@ class ClassDefinitionOpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
     protected function getErrorList()
     {
         return [
-                1  => 1,
-                5  => 1,
-                19 => 2,
-                21 => 1,
-                23 => 1,
-                31 => 1,
-                33 => 0,
-                44 => 1,
-                50 => 1,
-                61 => 1,
-                71 => 1,
-                76 => 1,
-               ];
+            1  => 1,
+            5  => 1,
+            19 => 2,
+            21 => 1,
+            23 => 1,
+            31 => 1,
+            33 => 0,
+            44 => 1,
+            50 => 1,
+            61 => 1,
+            71 => 1,
+            76 => 1,
+        ];
 
     }//end getErrorList()
 

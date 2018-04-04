@@ -45,7 +45,7 @@ class OperatorSniff implements Sniff
                 Tokens::$assignmentTokens,
                 Tokens::$arithmeticTokens,
                 Tokens::$equalityTokens,
-                array(T_STRING_CONCAT)
+                [T_STRING_CONCAT]
             )
         );
 

@@ -38,7 +38,7 @@ class ColourDefinitionSniff implements Sniff
      *
      * @var array
      */
-    public $supportedTokenizers = array('CSS');
+    public $supportedTokenizers = ['CSS'];
 
 
     /**
@@ -48,7 +48,7 @@ class ColourDefinitionSniff implements Sniff
      */
     public function register()
     {
-        return array(T_COLOUR);
+        return [T_COLOUR];
 
     }//end register()
 
@@ -70,10 +70,10 @@ class ColourDefinitionSniff implements Sniff
         $expected = strtoupper($colour);
         if ($colour !== $expected) {
             $error = 'CSS colours must be defined in uppercase; expected %s but found %s';
-            $data  = array(
-                      $expected,
-                      $colour,
-                     );
+            $data  = [
+                $expected,
+                $colour,
+            ];
             $phpcsFile->addError($error, $stackPtr, 'NotUpper', $data);
         }
 
@@ -81,10 +81,10 @@ class ColourDefinitionSniff implements Sniff
         if (strlen($colour) === 4) {
             $expected = '#'.$colour{1}.$colour{1}.$colour{2}.$colour{2}.$colour{3}.$colour{3};
             $error    = 'CSS colours must use hex triplets; expected %s but found %s';
-            $data     = array(
-                         $expected,
-                         $colour,
-                        );
+            $data     = [
+                $expected,
+                $colour,
+            ];
             $phpcsFile->addError($error, $stackPtr, 'Triplet', $data);
         }
 

@@ -48,7 +48,7 @@ class FunctionCallSignatureSniff implements Sniff
      */
     public function register()
     {
-        return array(T_STRING);
+        return [T_STRING];
 
     }//end register()
 
@@ -274,10 +274,10 @@ class FunctionCallSignatureSniff implements Sniff
 
                 if ($expectedIndent !== $foundIndent) {
                     $error = 'Multi-line function call not indented correctly; expected %s spaces but found %s';
-                    $data  = array(
-                              $expectedIndent,
-                              $foundIndent,
-                             );
+                    $data  = [
+                        $expectedIndent,
+                        $foundIndent,
+                    ];
                     $phpcsFile->addError($error, $i, 'Indent', $data);
                 }
             }//end if
@@ -298,7 +298,7 @@ class FunctionCallSignatureSniff implements Sniff
 
             if ($this->allowMultipleArguments === false && $tokens[$i]['code'] === T_COMMA) {
                 // Comma has to be the last token on the line.
-                $next = $phpcsFile->findNext(array(T_WHITESPACE, T_COMMENT), ($i + 1), $closeBracket, true);
+                $next = $phpcsFile->findNext([T_WHITESPACE, T_COMMENT], ($i + 1), $closeBracket, true);
                 if ($next !== false
                     && $tokens[$i]['line'] === $tokens[$next]['line']
                 ) {

@@ -40,10 +40,10 @@ class FunctionDeclarationSniff implements Sniff
      */
     public function register()
     {
-        return array(
-                T_FUNCTION,
-                T_CLOSURE,
-               );
+        return [
+            T_FUNCTION,
+            T_CLOSURE,
+        ];
 
     }//end register()
 
@@ -67,7 +67,7 @@ class FunctionDeclarationSniff implements Sniff
         $tokens = $phpcsFile->getTokens();
 
         // Opening brace should be on seperate line.
-        $errorData = array($tokens[$stackPtr]['content']);
+        $errorData = [$tokens[$stackPtr]['content']];
         if (isset($tokens[$stackPtr]['scope_opener']) === false) {
             $methodProperties = $phpcsFile->getMethodProperties($stackPtr);
             // If the method is abstract, we don't need a body.
@@ -96,11 +96,11 @@ class FunctionDeclarationSniff implements Sniff
             return;
         } else if ($braceLine > ($classLine + 1)) {
             $error = 'Opening brace of a %s must be on the line following the %s declaration; found %s line(s)';
-            $data  = array(
-                      $tokens[$stackPtr]['content'],
-                      $tokens[$stackPtr]['content'],
-                      ($braceLine - $classLine - 1),
-                     );
+            $data  = [
+                $tokens[$stackPtr]['content'],
+                $tokens[$stackPtr]['content'],
+                ($braceLine - $classLine - 1),
+            ];
             $phpcsFile->addError($error, $curlyBrace, 'OpenBraceWrongLine', $data);
             return;
         }
@@ -110,18 +110,18 @@ class FunctionDeclarationSniff implements Sniff
             $spaces = strlen($tokens[($stackPtr + 1)]['content']);
         }
 
-        $expectedSpaces = array(
-                           T_CLOSURE  => 0,
-                           T_FUNCTION => 1,
-                          );
+        $expectedSpaces = [
+            T_CLOSURE  => 0,
+            T_FUNCTION => 1,
+        ];
 
         $expectedNrOfSpaces = $expectedSpaces[$tokens[$stackPtr]['code']];
         if ($spaces !== $expectedNrOfSpaces) {
             $error = 'Expected %s spaces after FUNCTION keyword; %s found';
-            $data  = array(
-                      $expectedNrOfSpaces,
-                      $spaces,
-                     );
+            $data  = [
+                $expectedNrOfSpaces,
+                $spaces,
+            ];
             $phpcsFile->addError($error, $stackPtr, 'SpaceAfterFunction', $data);
         }
 
@@ -141,7 +141,7 @@ class FunctionDeclarationSniff implements Sniff
 
                 if ($length !== 1) {
                     $error = 'Expected 1 space after USE keyword; found %s';
-                    $data  = array($length);
+                    $data  = [$length];
                     $phpcsFile->addError($error, $use, 'SpaceAfterUse', $data);
                 }
 
@@ -155,7 +155,7 @@ class FunctionDeclarationSniff implements Sniff
 
                 if ($length !== 1) {
                     $error = 'Expected 1 space before USE keyword; found %s';
-                    $data  = array($length);
+                    $data  = [$length];
                     $phpcsFile->addError($error, $use, 'SpaceBeforeUse', $data);
                 }
             }//end if
@@ -310,10 +310,10 @@ class FunctionDeclarationSniff implements Sniff
 
                 if ($expectedIndent !== $foundIndent) {
                     $error = 'Multi-line function declaration not indented correctly; expected %s spaces but found %s';
-                    $data  = array(
-                              $expectedIndent,
-                              $foundIndent,
-                             );
+                    $data  = [
+                        $expectedIndent,
+                        $foundIndent,
+                    ];
                     $phpcsFile->addError($error, $i, 'Indent', $data);
                 }
 
