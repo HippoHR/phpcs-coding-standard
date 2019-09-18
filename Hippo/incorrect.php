@@ -72,6 +72,11 @@ class FruitBasket
     // Loop through all fruits and add them to the basket.
     foreach( $fruits as $Fruit )
     {
+      if( ! $Fruit instanceof Fruit )
+      {
+        continue;
+      }
+
       $this->fruits[] = $Fruit;
     }
 

@@ -54,6 +54,13 @@
  <!-- There MUST NOT be more than one statement per line. -->
  <rule ref="Generic.Formatting.DisallowMultipleStatements"/>
 
+ <!-- There MUST NOT be spacing after not. -->
+ <rule ref="Generic.Formatting.SpaceAfterNot">
+  <properties>
+   <property name="spacing" value="0"/>
+  </properties>
+ </rule>
+
  <!-- Code MUST use an indent of 2 spaces, and MUST NOT use tabs for indenting. -->
  <rule ref="Hippo.WhiteSpace.ScopeIndent">
   <properties>

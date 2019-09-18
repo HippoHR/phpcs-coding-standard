@@ -15,13 +15,13 @@ class FruitBasket
 {
   /**
    * The list with fruits in the basket.
-   * @var array $fruits
+   * @var array<Fruit> $fruits
    */
   public $fruits;
 
   /**
    * A list with fruit origin.
-   * @var array $origin
+   * @var array<string, string> $origin
    */
   public $origin;
 
@@ -29,7 +29,7 @@ class FruitBasket
    * The maximum number of fruits in the basket.
    * @const MAX_SIZE
    */
-  const MAX_SIZE = 5;
+  private const MAX_SIZE = 5;
 
   /**
    * Constructor for class FruitBasket
@@ -47,10 +47,10 @@ class FruitBasket
   /**
    * Add multiple fruits to the basket.
    *
-   * @param array $fruits A list with Fruit instances to add to the basket
+   * @param array<Fruit> $fruits A list with Fruit instances to add to the basket
    * @throws Exception Throws an exception if the basket does not have enough space.
    */
-  public function addFruits( $fruits )
+  public function addFruits( array $fruits ) : void
   {
     $newSize = count( $fruits ) + count( $this->fruits );
 
@@ -58,7 +58,8 @@ class FruitBasket
     {
       throw new Exception( 'Could not add fruits to the basket: not enough space' );
     }
-    elseif( $newSize == self::MAX_SIZE )
+
+    if( $newSize == self::MAX_SIZE )
     {
       echo 'Warning: basket is getting full!';
     }
@@ -66,6 +67,11 @@ class FruitBasket
     // Loop through all fruits and add them to the basket.
     foreach( $fruits as $Fruit )
     {
+      if( !$Fruit instanceof Fruit )
+      {
+        continue;
+      }
+
       $this->fruits[] = $Fruit;
     }
   }
@@ -75,7 +81,7 @@ class FruitBasket
    *
    * @param Fruit ...$fruits One or more fruits to add to the basket
    */
-  public function add( Fruit ...$fruits )
+  public function add( Fruit ...$fruits ) : void
   {
     $this->addFruits( $fruits );
   }
@@ -83,9 +89,9 @@ class FruitBasket
   /**
    * Pick a fruit from the basket
    * @param string $type Name of the preferred type of fruit
-   * @return Fruit
+   * @return array<Fruit>
    */
-  public function pickFruit( $type = null )
+  public function pickFruit( ?string $type = null ) : array
   {
     if( $this->canPickFruit( $type ) )
     {
@@ -108,9 +114,10 @@ class FruitBasket
 
       return array_splice( $this->fruits, $index, 1 );
     }
+    return [];
   }
 
-  private function canPickFruit( $type = null )
+  private function canPickFruit( ?string $type = null ) : bool
   {
     return count( $this->fruits )
       && (
@@ -119,7 +126,7 @@ class FruitBasket
       );
   }
 
-  private function containsType( $type )
+  private function containsType( string $type ) : bool
   {
     foreach( $this->fruits as $Fruit )
     {
@@ -135,9 +142,9 @@ class FruitBasket
    * Checks the state of a banana.
    *
    * @param Banana $Banana The banana to check
-   * @return boolean Whether the banana is ok or not
+   * @return bool Whether the banana is ok or not
    */
-  public function checkBanana( $Banana )
+  public function checkBanana( Banana $Banana ) : bool
   {
     // Check banana color.
     switch( $Banana->color )
@@ -165,7 +172,7 @@ class FruitBasket
   /**
    * Sort the fruits in the basket
    */
-  public function sort()
+  public function sort() : void
   {
     usort(
       $this->fruits,
@@ -178,7 +185,7 @@ class FruitBasket
           return 0;
         }
 
-        return ( $typeOfFruitA < $typeOfFruitB ) ? -1 : 1;
+        return $typeOfFruitA < $typeOfFruitB ? -1 : 1;
       }
     );
   }
@@ -187,7 +194,7 @@ class FruitBasket
    * Get a simple description of the fruit basket.
    * @return string
    */
-  public function __toString()
+  public function __toString() : string
   {
     $nrOfFruits = count( $this->fruits );
     return sprintf(
