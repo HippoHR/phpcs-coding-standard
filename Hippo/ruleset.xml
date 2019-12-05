@@ -179,7 +179,8 @@
 
   <exclude name="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
   <exclude name="SlevomatCodingStandard.ControlStructures.DisallowEmpty"/>
-  <exclude name="SlevomatCodingStandard.ControlStructures.ControlStructureSpacing"/>
+  <exclude name="SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing"/>
+  <exclude name="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing"/>
   <exclude name="SlevomatCodingStandard.ControlStructures.DisallowShortTernaryOperator"/>
   <exclude name="SlevomatCodingStandard.ControlStructures.LanguageConstructWithParentheses"/>
   <exclude name="SlevomatCodingStandard.ControlStructures.NewWithoutParentheses"/>
@@ -206,7 +207,9 @@
   <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes"/>
   <exclude name="SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax" />
   <exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint" />
-  <exclude name="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment"/>
+  <exclude name="SlevomatCodingStandard.TypeHints.ParameterTypeHint.UselessAnnotation"/>
+  <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
+  <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
   <exclude name="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment"/>
  </rule>
 
@@ -239,10 +242,6 @@
    <property name="spacesCountBeforeColon" value="1"/>
   </properties>
  </rule>
- <rule ref="SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessDocComment">
-  <severity>0</severity>
- </rule>
-
 
 
 
