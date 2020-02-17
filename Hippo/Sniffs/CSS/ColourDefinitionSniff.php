@@ -19,7 +19,7 @@ use PHP_CodeSniffer\Sniffs\Sniff;
 /**
  * Squiz_Sniffs_CSS_ColourDefinitionSniff.
  *
- * Ensure colours are defined in upper-case and use shortcuts where possible.
+ * Ensure colours are defined in upper-case and do not use shortcuts.
  *
  * @category  PHP
  * @package   PHP_CodeSniffer
@@ -74,18 +74,26 @@ class ColourDefinitionSniff implements Sniff
                 $expected,
                 $colour,
             ];
-            $phpcsFile->addError($error, $stackPtr, 'NotUpper', $data);
+
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'NotUpper', $data);
+            if ($fix === true) {
+                $phpcsFile->fixer->replaceToken($stackPtr, $expected);
+            }
         }
 
-        // Now check if shorthand can be used.
+        // Now check if shorthand is used.
         if (strlen($colour) === 4) {
-            $expected = '#'.$colour{1}.$colour{1}.$colour{2}.$colour{2}.$colour{3}.$colour{3};
+            $expected = '#'.$colour[1].$colour[1].$colour[2].$colour[2].$colour[3].$colour[3];
             $error    = 'CSS colours must use hex triplets; expected %s but found %s';
             $data     = [
                 $expected,
                 $colour,
             ];
-            $phpcsFile->addError($error, $stackPtr, 'Triplet', $data);
+
+            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Triplet', $data);
+            if ($fix === true) {
+                $phpcsFile->fixer->replaceToken($stackPtr, $expected);
+            }
         }
 
     }//end process()
