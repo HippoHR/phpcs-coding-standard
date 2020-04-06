@@ -14,7 +14,7 @@
     "sort-packages": true
   },
   "require": {
-    "slevomat/coding-standard": "6.0.8"
+    "slevomat/coding-standard": "6.1.5"
   },
   "require-dev": {
     "phpunit/phpunit": "7.5.12",

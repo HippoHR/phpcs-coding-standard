@@ -168,6 +168,7 @@
   <!-- sniffs to exclude -->
   <exclude name="SlevomatCodingStandard.Arrays.TrailingArrayComma" />
 
+  <exclude name="SlevomatCodingStandard.Classes.ClassStructure" />
   <exclude name="SlevomatCodingStandard.Classes.EmptyLinesAroundClassBraces" />
   <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming" />
   <exclude name="SlevomatCodingStandard.Classes.SuperfluousExceptionNaming" />
@@ -188,6 +189,7 @@
   <exclude name="SlevomatCodingStandard.ControlStructures.RequireTernaryOperator"/>
   <exclude name="SlevomatCodingStandard.ControlStructures.RequireYodaComparison" />
 
+  <exclude name="SlevomatCodingStandard.Files.LineLength"/>
   <exclude name="SlevomatCodingStandard.Files.TypeNameMatchesFileName"/>
 
   <exclude name="SlevomatCodingStandard.Functions.StaticClosure"/>
@@ -211,9 +213,22 @@
   <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
   <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.UselessAnnotation"/>
   <exclude name="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment"/>
+
  </rule>
 
  <!-- customization of Slevomat coding standard -->
+ <rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace">
+  <properties>
+   <property name="spacesAroundBrackets" value="1"/>
+  </properties>
+ </rule>
+
+ <rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature">
+  <properties>
+   <property name="minLineLength" value="161"/>
+  </properties>
+ </rule>
+
  <rule ref="SlevomatCodingStandard.Classes.TraitUseSpacing">
   <properties>
    <property name="linesCountBeforeFirstUse" value="0"/>
