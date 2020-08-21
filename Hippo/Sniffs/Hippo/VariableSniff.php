@@ -27,6 +27,7 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class VariableSniff implements Sniff
 {
+
     /**
      * Source: http://php.net/manual/en/reserved.variables.php.
      *

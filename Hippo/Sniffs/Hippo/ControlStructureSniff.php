@@ -25,6 +25,7 @@ use PHP_CodeSniffer\Util\Tokens;
 
 class ControlStructureSniff implements Sniff
 {
+
     /**
      * Tokens to find parenthesis near.
      *
