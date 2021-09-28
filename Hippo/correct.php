@@ -17,13 +17,13 @@ class FruitBasket
    * The list with fruits in the basket.
    * @var array<Fruit> $fruits
    */
-  public $fruits;
+  public array $fruits;
 
   /**
    * A list with fruit origin.
    * @var array<string, string> $origin
    */
-  public $origin;
+  public array $origin;
 
   /**
    * The maximum number of fruits in the basket.
