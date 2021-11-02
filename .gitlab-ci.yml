@@ -1,0 +1,40 @@
+variables:
+  APPLICATION: hcs
+
+image: pimlab/composer:latest-php7.4
+
+stages:
+  - test
+  - lint
+
+test:unit:
+  stage: test
+  script:
+    - composer install && composer test
+  artifacts:
+    when: always
+    expire_in: 1 hour
+    untracked: true
+    reports:
+      junit: build/phpunit/junit.xml
+
+lint:arcanist:
+  stage: lint
+  allow_failure: true
+  script:
+    - apt-get update && apt-get install -y git wget
+    - wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && mv jq-linux64 /etc/jq && chmod +x /etc/jq
+    - git clone https://github.com/phacility/arcanist.git /etc/arcanist && chmod +x /etc/arcanist/bin/arc
+    - git fetch origin ${CI_DEFAULT_BRANCH}:${CI_DEFAULT_BRANCH}
+    - EXIT_CODE=0
+    - LINT_ISSUES=$(/etc/arcanist/bin/arc lint --never-apply-patches --output json --rev ${CI_DEFAULT_BRANCH}) || EXIT_CODE=1
+    - >
+      echo $LINT_ISSUES |
+        /etc/jq --argjson severities '{"disabled":"info","advise":"minor","warning":"major","error":"critical"}' \
+        'keys as $parent | .[] | map(.severity |= $severities[.]) | .[] | {"description": (.name + ": " + .description), "severity": .severity, "location": {"path": $parent, "lines": {"begin": .line}}}' |\
+        /etc/jq '[inputs]' \
+        >> arcanist.json
+    - exit "$EXIT_CODE"
+  artifacts:
+    reports:
+      codequality: arcanist.json

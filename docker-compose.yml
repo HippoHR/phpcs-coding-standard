@@ -1,0 +1,7 @@
+version: "3"
+services:
+  php:
+    image: "pimlab/composer:latest-php7.4"
+    volumes:
+      - .:/var/www/hcs
+    command: bash -c "cd /var/www/hcs && composer install && composer test"
