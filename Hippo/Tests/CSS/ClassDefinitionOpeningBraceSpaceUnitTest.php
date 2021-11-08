@@ -32,10 +32,10 @@ class ClassDefinitionOpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
             21 => 1,
             23 => 1,
             31 => 1,
-            33 => 0,
+            33 => 1,
             44 => 1,
             50 => 1,
-            61 => 1,
+            61 => 0,
             71 => 1,
             76 => 1,
         ];

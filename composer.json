@@ -7,7 +7,7 @@
     ],
     "test": [
       "@composer pre-test",
-      "phpunit --filter \"Hippo\""
+      "phpunit --filter \"Hippo\" --log-junit build/phpunit/junit.xml"
     ]
   },
   "config": {
