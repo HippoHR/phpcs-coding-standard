@@ -68,26 +68,30 @@ class ClassDefinitionOpeningBraceSpaceSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
-            $error = 'Expected 1 newline before opening brace of class definition; 0 found';
-            $phpcsFile->addError($error, $stackPtr, 'NoneBefore');
-        } else {
-            $content = $tokens[($stackPtr - 1)]['content'];
-            if ($content !== PHP_EOL) {
-                $length = strlen($content);
-                if ($length === 1) {
-                    if ($content === ' ') {
-                        $length = 'space';
-                    } else {
-                        $length = 'tab';
-                    }
-                }
+        /*
+            There are several valid cases:
+            1. top level selector + 1 new line + opening bracket OR
+            2. media query ending with parenthesis + 1 new line + opening bracket
+            3. nested selector + 1 new line + some indentation spaces + opening bracket
+        */
 
-                $error = 'Expected 1 newline before opening brace of class definition; %s found';
-                $data  = [$length];
-                $phpcsFile->addError($error, $stackPtr, 'Before', $data);
-            }
-        }//end if
+        $isNested = false;
+        $prBr     = $phpcsFile->findPrevious(T_OPEN_CURLY_BRACKET, ($stackPtr - 1));
+        if ($prBr !== false) {
+            $isNested = ($stackPtr > $tokens[$prBr]['bracket_opener']) && ($stackPtr < $tokens[$prBr]['bracket_closer']);
+        }
+
+        $case1 = $stackPtr >= 2 && $tokens[($stackPtr - 2)]['code'] == T_STRING && $tokens[($stackPtr - 1)]['content'] == PHP_EOL;
+
+        $case2 = $stackPtr >= 2 && $tokens[($stackPtr - 2)]['code'] == T_CLOSE_PARENTHESIS && $tokens[($stackPtr - 1)]['content'] == PHP_EOL;
+
+        $case3 = $isNested && $stackPtr >= 3 && $tokens[($stackPtr - 3)]['code'] == T_STRING && $tokens[($stackPtr - 2)]['content'] == PHP_EOL &&
+          $tokens[($stackPtr - 1)]['code'] == T_WHITESPACE;
+
+        if (!($case1 || $case2 || $case3)) {
+            $error = 'Expected 1 newline before opening brace of class definition; 0 or more than 1 found';
+            $phpcsFile->addError($error, $stackPtr, 'NoneBefore');
+        }
 
         $next = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
         if ($next === false) {
